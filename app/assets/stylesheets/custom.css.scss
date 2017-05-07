@@ -1,6 +1,48 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+#logo{
+	float: left;
+	font-size: 1.7em;
+	text-transform: uppercase;
+	letter-spacing: -1px;
+	font-weight: bold;
+}
+
+#logo:hover {
+	text-decoration:none;
+}
+
+.center {
+	text-align: center;
+}
+
+.jumbotron{
+	background-image: asset-url('red.jpg');
+	background-size: cover;
+	height: 550px;
+}
+
+.jumbotron h1{
+	color: #fff;
+	text-align: center;
+	marging-bottom: 30px;
+	letter-spacing: -1px;
+	font-weight: bold;
+}
+
+.btn-xlarge{
+	font-size: 1.7em;
+	background-color: black;
+}
+
+
+.listing {
+list-style: none;
+padding-left: 0;
+
+}
+
 footer {
 	margin-top: 45px;
 	padding-top: 5px;
@@ -25,4 +67,3 @@ footer ul li{
 	float: left;
 	margin-left: 15px;
 }
-
