@@ -10,14 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170506194829) do
+ActiveRecord::Schema.define(version: 20170507163251) do
+
+  create_table "events", force: :cascade do |t|
+    t.float    "article_qualis_a1"
+    t.float    "article_qualis_a2"
+    t.float    "article_qualis_b1"
+    t.float    "article_qualis_b2"
+    t.float    "article_qualis_b3"
+    t.float    "article_qualis_b4"
+    t.float    "article_qualis_b5"
+    t.float    "article_qualis_c"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "user_id"
+    t.string   "event_name"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "password_digest"
+    t.boolean  "admin",           default: false
   end
 
 end
