@@ -1,4 +1,10 @@
 class EventsController < ApplicationController 
+	before_action :set_event, only: [:edit, :update, :show, :destroy]
+	before_action :require_same_user, only: [:edit, :update, :destroy]
+	before_action :require_user, except: [:index, :show]
+	before_action :require_admin, only: [:index]
+	
+
 
 	def index
 		@events = Event.paginate(page: params[:page], per_page: 5)
@@ -20,14 +26,22 @@ class EventsController < ApplicationController
 	end
 
 	def show
-		@event = Event.find(params[:id])
+	end
+
+	def update
+		
 	end
 
 	def destroy
-		@event = Event.find(params[:id])
 		@event.destroy
-		flash[:danger] = "Article was successfully deleted"
-		redirect_to events_path
+		flash[:danger] = "Event was successfully deleted"
+		redirect_to root_path
+	end
+
+
+	private
+	def set_event
+		@event = Event.find(params[:id])
 	end
 
 	def event_params
@@ -35,4 +49,17 @@ class EventsController < ApplicationController
 			:article_qualis_b2, :article_qualis_b3, :article_qualis_b4, :article_qualis_b5, :article_qualis_c)
 	end
 	
+	def require_same_user
+		if current_user != @event.user and !current_user.admin?
+			flash[:danger] = "You can only edit or delete your own events"
+			redirect_to root_path
+		end
+	end
+
+	def require_admin
+		if !current_user.admin?
+			flash[:danger] = "You have to be an admin to perform this action"
+			redirect_to user_path(current_user)
+		end
+	end
 end
