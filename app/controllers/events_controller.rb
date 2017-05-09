@@ -1,7 +1,7 @@
 class EventsController < ApplicationController 
 	before_action :set_event, only: [:edit, :update, :show, :destroy]
+	before_action :require_user
 	before_action :require_same_user, only: [:edit, :update, :destroy]
-	before_action :require_user, except: [:index, :show]
 	before_action :require_admin, only: [:index]
 	
 
