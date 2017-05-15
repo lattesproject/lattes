@@ -18,15 +18,15 @@
 }
 
 .jumbotron{
-	background-image: asset-url('red.jpg');
+	background-image: asset-url('lupa.jpg');
 	background-size: cover;
 	height: 550px;
 }
 
 .jumbotron h1{
-	color: #fff;
+	color: #000;
 	text-align: center;
-	marging-bottom: 30px;
+	padding-top: 80px;
 	letter-spacing: -1px;
 	font-weight: bold;
 }
