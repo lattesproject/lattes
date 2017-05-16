@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 		if @user.save
 		session[:user_id] = @user.id
 		flash[:success] = "Welcome to the Avaliação Lattes #{@user.username}"
-		redirect_to events_path(@user)
+		redirect_to user_path(current_user)
 		else
 			render 'new'
 		end
