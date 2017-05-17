@@ -18,7 +18,7 @@ class EventsController < ApplicationController
 		@event = Event.new(event_params)
 		@event.user = current_user
 		if @event.save
-			flash[:success] = "Event was successfully created"
+			flash[:success] = "Evento criado com sucesso"
 			redirect_to event_path(@event)
 		else
 			render 'new'
@@ -34,7 +34,7 @@ class EventsController < ApplicationController
 
 	def destroy
 		@event.destroy
-		flash[:danger] = "Event was successfully deleted"
+		flash[:danger] = "Evento deletado com sucesso"
 		redirect_to root_path
 	end
 
@@ -117,14 +117,14 @@ class EventsController < ApplicationController
 	
 	def require_same_user
 		if current_user != @event.user and !current_user.admin?
-			flash[:danger] = "You can only edit or delete your own events"
+			flash[:danger] = "Você só pode editar ou deletar seus próprio eventos"
 			redirect_to root_path
 		end
 	end
 
 	def require_admin
 		if !current_user.admin?
-			flash[:danger] = "You have to be an admin to perform this action"
+			flash[:danger] = "Você precisa de permissão de administrador para executar essa ação"
 			redirect_to user_path(current_user)
 		end
 	end

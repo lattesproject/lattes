@@ -18,8 +18,8 @@
 				</div>
 				<% if logged_in? && (current_user == event.user|| current_user.admin?) %>
 				<div class="event-actions">
-					<%= link_to "Delete this event", event_path(event), method: :delete,
-					data: { confirm: "Are you sure you want to delete the event?"},
+					<%= link_to "Delete esse evento", event_path(event), method: :delete,
+					data: { confirm: "Tem certeza que deseja deletar esse evento?"},
 					class: "btn btn-xs btn-danger" %>
 				</div>
 				<% end %>

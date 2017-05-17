@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 		@user = User.new(user_params)
 		if @user.save
 		session[:user_id] = @user.id
-		flash[:success] = "Welcome to the Avaliação Lattes #{@user.username}"
+		flash[:success] = "Bem vindo ao sistema Avaliação Lattes #{@user.username}"
 		redirect_to user_path(current_user)
 		else
 			render 'new'
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
 	def update
 		if @user.update(user_params)
-			flash[:success] = "Your account was updated successfully"
+			flash[:success] = "Conta criada com sucesso"
 			redirect_to events_path
 		else
 			render 'edit'
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 	def destroy
 		@user = User.find(params[:id])
 		@user.destroy
-		flash[:danger] = "User and all articles events by user have been deleted"
+		flash[:danger] = "Usuário e todos os eventos associados foram deletados"
 		redirect_to users_path
 	end
 
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
 	
 	def require_same_user_or_admin
 		if !current_user.admin? && current_user !=@user
-			flash[:danger] = "You can only edit your own account"
+			flash[:danger] = "Você só pode editar sua própria conta"
 			redirect_to root_path
 		end
 	end

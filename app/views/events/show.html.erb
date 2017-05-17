@@ -18,10 +18,10 @@
 	<hr>
 	<div class="event-actions">
 		<% if logged_in? && current_user == @event.user %>
-		<%= link_to "Delete this event", event_path(@event), method: :delete,
-		data: { confirm: "Are you sure you want to delete the event?"},
+		<%= link_to "Delete esse evento", event_path(@event), method: :delete,
+		data: { confirm: "Tem certeza que deseja deletar esse evento?"},
 		class: "btn btn-xs btn-danger" %>
-		<%= link_to "View all events", user_path(current_user), class: "btn btn-xs btn-success" %>
+		<%= link_to "Visualizar todos eventos", user_path(current_user), class: "btn btn-xs btn-success" %>
 		<% end %>
 	</div>
 </div>
