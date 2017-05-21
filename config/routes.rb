@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
-  post 'process_cv', to: 'candidates#process_cv'
+  post 'candidates/process_cv', to: 'candidates#process_cv'
   get 'candidates', to: 'candidates#index'
 end

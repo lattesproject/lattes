@@ -4,8 +4,8 @@ require 'nokogiri'
 
 class CvHandler
 
-	def convert_xml_json
-		xml  = File.read("C:/Users/Bruno Souza/lattes_project/tmp/curriculo.xml")
+	def convert_xml_json(xml)
 		json = Hash.from_xml(xml).to_json
+		JSON.parse(json)
 	end
 end

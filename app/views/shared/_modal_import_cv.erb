@@ -8,10 +8,10 @@
       </div>
       <div class="modal-body">
          <div id="page-upload-1">
-            <form method="post" id="cv_form" class="form" action="/candidates/process_cv">
+            <form method="post" id="cv_form" class="form" action="/candidates/process_cv" enctype="multipart/form-data">
                <div class="form-group">
                   <label for="cv_file">Currículo</label>
-                  <input type="file" id="cv_file">
+                  <input type="file" id="cv_file" name="datafile">
                </div>
                <div class="form-group">
                   <label for="evento">Evento</label>
