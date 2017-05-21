@@ -1,33 +1,36 @@
-<h1 align="center">Bem vindo a página de <%= @user.username %></h1>
-
-<h4 align="center"><%= @user.username %>'s Events</h4>
-<% @user_events.each do |event| %>
-	<div class="row">
-		<div class="col-xs-8 col-xs-offset-2">
-			<div class="well well-lg">
-				<div class="event-title">
-					<%= link_to event.event_name, event_path(event) %>
-				</div>
-				<div class="event-body">
-					<%= truncate(event.event_name, length: 100) %>
-					<div class="article-meta-details">
-						<small>Created by: <%= event.user.username if event.user%>,
-						<%= time_ago_in_words(event.created_at) %> ago,
-						last updated: <%= time_ago_in_words(event.updated_at) %> ago</small>
-					</div>
-				</div>
-				<% if logged_in? && (current_user == event.user|| current_user.admin?) %>
-				<div class="event-actions">
-					<%= link_to "Delete esse evento", event_path(event), method: :delete,
-					data: { confirm: "Tem certeza que deseja deletar esse evento?"},
-					class: "btn btn-xs btn-danger" %>
-				</div>
-				<% end %>
-			</div>
-		</div>
-		</div>
-<% end %>
-
-<div align="center">
-	<%= will_paginate @user_events%>
+<div class="panel panel-default">
+<div class="panel-heading text-center"><h4><strong>Eventos</strong></h4></div>
+<div class="panel-body form-inline">
+	<input type="text" class="form-control" placeholder="Pesquisar">
+	<%= link_to "Novo Evento", new_event_path, class: "btn btn-primary pull-right" %>
 </div>
+<table class="table table-bordered" >
+	<thead>
+		<tr>
+			<th>Evento</th>
+			<th>Avaliados</th>
+			<th>Data de Criação</th>
+			<th>Ações</th>
+		</tr>
+	</thead>
+	<tbody>
+<% @user_events.each do |event| %>
+<tr>
+	<td><%= link_to event.event_name, event_path(event) %></td>
+	<td>5</td>
+	<td><%= time_ago_in_words(event.created_at) %> ago</td>
+	<td>
+		<%= link_to "Avaliar Candidato", "", {"id"=>event.event_name, "data-toggle"=> "modal", "data-target"=> "#modal-import-cv", "style"=> "padding-left:6px"} %>
+		<%= link_to "Visualizar Candidatos", event_path(event), style: "padding-left:6px" %>
+		<% if logged_in? && (current_user == event.user|| current_user.admin?) %>
+			
+			<%= link_to "Deletar", event_path(event), method: :delete,
+			data: { confirm: "Tem certeza que deseja deletar esse evento?"},
+			style: "padding-left:6px" %>
+
+		<% end %>
+	</td>
+</tr>
+<% end %>
+</tbody>
+</table>
