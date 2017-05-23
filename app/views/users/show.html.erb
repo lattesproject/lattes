@@ -20,7 +20,7 @@
 	<td>5</td>
 	<td><%= time_ago_in_words(event.created_at) %> ago</td>
 	<td>
-		<%= link_to "Avaliar Candidato", "", {"id"=>event.event_name, "data-toggle"=> "modal", "data-target"=> "#modal-import-cv", "style"=> "padding-left:6px"} %>
+		<%= link_to "Avaliar Candidato", "", {"data-event"=>event.id, "data-toggle"=> "modal", "data-target"=> "#modal-import-cv", "style"=> "padding-left:6px"} %>
 		<%= link_to "Visualizar Candidatos", event_path(event), style: "padding-left:6px" %>
 		<% if logged_in? && (current_user == event.user|| current_user.admin?) %>
 			
