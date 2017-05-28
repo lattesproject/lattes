@@ -20,20 +20,16 @@ skip_before_filter :verify_authenticity_token, :only => [:index, :process_cv]
 	def process_cv
 		ActionController::Parameters.permit_all_parameters = true
 		uploaded_xml_cv = File.read(params[:datafile].tempfile)
-		processing_xml = CvHandler.new
-		@json_cv = processing_xml.convert_xml_json(uploaded_xml_cv)
 		
-		#render json: @json_cv
+		#@event = Event.find(params[:id])
 
-		puts @json_cv['CURRICULO_VITAE']['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO']
+		#@json_qualis =  File.read('C:\periodico.json')
+		#render json: @json_qualis
+		#puts  @json_qualis.class.name + "HHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
 
-
-		render json: @json_cv['CURRICULO_VITAE']['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO']
-		
-		
-
-		#json["Continents"].each do |continent|
- 		 # do something
-		#end
+		@event = Event.find(params[:events][:event_id])
+		@cv_handler = CvHandler.new(uploaded_xml_cv,@event)
+		@candidate = Candidate.new
+		#@cv_handler.calculate_total_book_points
 	end
 end
