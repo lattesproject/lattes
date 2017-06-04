@@ -1,4 +1,232 @@
-<%= @cv_handler.get_books[0]['SEQUENCIA_PRODUCAO'] %>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#artigos">Artigos</a></li>
+    <li><a data-toggle="tab" href="#livros_e_cap">Livros e Cap.</a></li>
+    <li><a data-toggle="tab" href="#res_em_anais_de_cong">Res. em Anais de Cong</a></li>
+    <li><a data-toggle="tab" href="#trab_completo_em_anais_de_cong">Trab. Completo em Anais de Cong</a></li>
+    <li><a data-toggle="tab" href="#proj_de_pesquisa">Proj. de Pesquisa</a></li>
+    <li><a data-toggle="tab" href="#bancas">Bancas</a></li>
+    <li><a data-toggle="tab" href="#orientacoes">Orientações</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="artigos" class="tab-pane fade in active">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Artigos Identificados</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Artigo</th>
+                        <th>Periódico ou Revista</th>
+                        <th>Categoria</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_articles_found.each do |article| %>
+            <tr>
+                <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["TITULO_DO_ARTIGO"] %></td>
+                <td><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
+                <td><%= article["qualis"] %></td>
+                <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"] %></td>
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_articles_found_total_points%></div>
+        </div>
+        <div class="panel panel-default">
+                <div class="panel-heading text-center"><h4><strong>Artigos Não Identificados</strong></h4></div>
+                <div class="panel-body form-inline">
+                    <input type="text" class="form-control" placeholder="Pesquisar">        
+                </div>
+        </div>
+    </div>
+
+    <div id="livros_e_cap" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Livros</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Livro</th>
+                        <th>Editora</th>
+                        <th>Ano</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_books.each do |book| %>
+            <tr>
+                <td><%= book["DADOS_BASICOS_DO_LIVRO"]["TITULO_DO_LIVRO"] %></td>
+                <td><%= book["DETALHAMENTO_DO_LIVRO"]["NOME_DA_EDITORA"] %></td>
+                <td><%= book["DADOS_BASICOS_DO_LIVRO"]["ANO"] %></td>
+                <td><%= book["DETALHAMENTO_DO_LIVRO"]["ISBN"] %></td>
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_book_total_points %></div>
+        </div>
+        <div class="panel panel-default">
+        <div class="panel-heading text-center"><h4><strong>Capítulo de Livros</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Capítulo</th>
+                        <th>Editora</th>
+                        <th>Ano</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_book_caps.each do |book_cap| %>
+            <tr>
+                <td><%= book_cap["DADOS_BASICOS_DO_CAPITULO"]["TITULO_DO_CAPITULO_DO_LIVRO"] %></td>
+                <td><%= book_cap["DETALHAMENTO_DO_CAPITULO"]["NOME_DA_EDITORA"] %></td>
+                <td><%= book_cap["DADOS_BASICOS_DO_CAPITULO"]["ANO"] %></td>
+                <td><%= book_cap["DETALHAMENTO_DO_CAPITULO"]["ISBN"] %></td>
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_book_cap_total_points %></div>
+        </div>
+    </div>
+    <div id="bancas" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Bancas Doutorado</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_doctor_judgement_participation.each do |judgement_participation| %>
+            <tr>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["TITULO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["NOME_DO_CANDIDATO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["NOME_INSTITUICAO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["NOME_CURSO"] %></td>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_doctor_judgement_participation_points %></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Bancas Mestrado</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_master_judgement_participation.each do |judgement_participation| %>
+            <tr>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["TITULO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["NOME_DO_CANDIDATO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["NOME_INSTITUICAO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["NOME_CURSO"] %></td>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_master_judgement_participation_points %></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Bancas Especialização</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_postgraduate_judgement_participation.each do |judgement_participation| %>
+            <tr>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["TITULO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["NOME_DO_CANDIDATO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["NOME_INSTITUICAO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["NOME_CURSO"] %></td>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_postgraduate_judgement_participation_points %></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Bancas Graduação</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_graduation_judgement_participation.each do |judgement_participation| %>
+            <tr>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["TITULO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["NOME_DO_CANDIDATO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["NOME_INSTITUICAO"] %></td>
+                <td><%= judgement_participation["DETALHAMENTO_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["NOME_CURSO"] %></td>
+                <td><%= judgement_participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer">Total: <%= @cv_handler.get_graduation_judgement_participation_points %></div>
+        </div>
+    </div>
 
 
-<%= @cv_handler.calculate_total_article_points %>
+
+</div>
