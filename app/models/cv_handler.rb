@@ -92,7 +92,7 @@ class CvHandler
 
 	def get_book_cap_total_points
 		size = @book_caps.length
-		size = max if size > @event.capitulos_de_livros_max
+		size = @event.capitulos_de_livros_max if size > @event.capitulos_de_livros_max
 		size * @event.capitulos_de_livros
 	end
 
