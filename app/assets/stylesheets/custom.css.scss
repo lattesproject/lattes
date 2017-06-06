@@ -67,3 +67,12 @@ footer ul li{
 	float: left;
 	margin-left: 15px;
 }
+
+.candidate-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+}
+
+.candidate-tabs {
+    text-align:center;
+}

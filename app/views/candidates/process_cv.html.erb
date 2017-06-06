@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav candidate-tabs nav-tabs">
     <li class="active"><a data-toggle="tab" href="#artigos">Artigos</a></li>
     <li><a data-toggle="tab" href="#livros_e_cap">Livros e Cap.</a></li>
     <li><a data-toggle="tab" href="#res_em_anais_de_cong">Res. em Anais de Cong</a></li>
@@ -35,7 +35,7 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_articles_found_total_points%></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_articles_found_total_points%></strong></div>
         </div>
         <div class="panel panel-default">
                 <div class="panel-heading text-center"><h4><strong>Artigos Não Identificados</strong></h4></div>
@@ -71,7 +71,7 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_book_total_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_book_total_points %></strong></div>
         </div>
         <div class="panel panel-default">
         <div class="panel-heading text-center"><h4><strong>Capítulo de Livros</strong></h4></div>
@@ -98,9 +98,10 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_book_cap_total_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_book_cap_total_points %></strong></div>
         </div>
     </div>
+
     <div id="bancas" class="tab-pane fade in">
         <div class="panel panel-default">
             <div class="panel-heading text-center"><h4><strong>Bancas Doutorado</strong></h4></div>
@@ -130,7 +131,7 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_doctor_judgement_participation_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_doctor_judgement_participation_points %></strong></div>
         </div>
 
         <div class="panel panel-default">
@@ -161,7 +162,7 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_master_judgement_participation_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_master_judgement_participation_points %></strong></div>
         </div>
 
         <div class="panel panel-default">
@@ -192,7 +193,7 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_postgraduate_judgement_participation_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_postgraduate_judgement_participation_points %></strong></div>
         </div>
 
         <div class="panel panel-default">
@@ -223,10 +224,153 @@
             <% end %>
             </tbody>
             </table>
-            <div class="panel-footer">Total: <%= @cv_handler.get_graduation_judgement_participation_points %></div>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_graduation_judgement_participation_points %></strong></div>
         </div>
     </div>
 
+    <div id="proj_de_pesquisa" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Projetos de Pesquisa</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Nome Projeto</th>
+                        <th>Ano Início</th>
+                        <th>Ano Fim</th>
+                        <th>Situação</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_projects.each do |project| %>
+            <tr>
+                <td><%= project["NOME_DO_PROJETO"] %></td>
+                <td><%= project["ANO_INICIO"] %></td>
+                <td><%= project["ANO_FIM"] %></td>
+                <td><%= project["SITUACAO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_project_total_points %></strong></div>
+        </div>
+    </div>
 
+    <div id="res_em_anais_de_cong" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Resumo em Anais de Congresso</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+        </div>
+    </div>
+
+    <div id="trab_completo_em_anais_de_cong" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Trabalho Completo em Anais de Congresso</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+        </div>
+    </div>
+
+        <div id="orientacoes" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Orientações Doutorado</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_doctor_tutoring.each do |doctor_tutoring| %>
+            <tr>
+                <td><%= doctor_tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["TITULO"] %></td>
+                <td><%= doctor_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["NOME_DO_ORIENTADO"] %></td>
+                <td><%= doctor_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["NOME_DA_INSTITUICAO"] %></td>
+                <td><%= doctor_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["NOME_DO_CURSO"] %></td>
+                <td><%= doctor_tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_doctor_tutoring_points %></strong></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Orientações Mestrado</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_master_tutoring.each do |master_tutoring| %>
+            <tr>
+                <td><%= master_tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["TITULO"] %></td>
+                <td><%= master_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["NOME_DO_ORIENTADO"] %></td>
+                <td><%= master_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["NOME_DA_INSTITUICAO"] %></td>
+                <td><%= master_tutoring["DETALHAMENTO_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["NOME_DO_CURSO"] %></td>
+                <td><%= master_tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["ANO"] %></td>
+                
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_master_tutoring_points %></strong></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center"><h4><strong>Outras Orientações Concluídas</strong></h4></div>
+            <div class="panel-body form-inline">
+                <input type="text" class="form-control" placeholder="Pesquisar">
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Título do Trabalho</th>
+                        <th>Nome Orientado</th>
+                        <th>Natureza</th>
+                        <th>Instituição</th>
+                        <th>Curso</th>
+                        <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% @cv_handler.get_other_tutoring.each do |other_tutoring| %>
+            <tr>
+                <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["TITULO"] %></td>
+                <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DO_ORIENTADO"] %></td>
+                <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NATUREZA"] %></td>
+                <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DA_INSTITUICAO"] %></td>
+                <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DO_CURSO"] %></td>
+                <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["ANO"] %></td>
+            </tr>
+            <% end %>
+            </tbody>
+            </table>
+            <div class="panel-footer"><strong>Total: <%= @cv_handler.get_other_tutoring_points %></strong></div>
+        </div>
+    </div>
 
 </div>

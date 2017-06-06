@@ -30,6 +30,6 @@ skip_before_filter :verify_authenticity_token, :only => [:index, :process_cv]
 		@event = Event.find(params[:events][:event_id])
 		@cv_handler = CvHandler.new(uploaded_xml_cv,@event)
 		@candidate = Candidate.new
-		@cv_handler.calculate_total_article_points
+		
 	end
 end
