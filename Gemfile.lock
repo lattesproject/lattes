@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/rweng/jquery-datatables-rails.git
+  revision: d486b31b192a2924b1913e080ad23460e6b96d31
+  specs:
+    jquery-datatables-rails (3.4.0)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+      sass-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -55,7 +65,7 @@ GEM
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.12.2)
+    coffee-script-source (1.8.0)
     concurrent-ruby (1.0.5)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -163,7 +173,9 @@ DEPENDENCIES
   bootstrap-will_paginate (= 0.0.10)
   byebug
   coffee-rails (~> 4.2)
+  coffee-script-source (= 1.8.0)
   jbuilder (~> 2.5)
+  jquery-datatables-rails!
   jquery-rails
   pg
   puma (~> 3.0)
