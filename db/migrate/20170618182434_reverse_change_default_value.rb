@@ -1,0 +1,116 @@
+class ReverseChangeDefaultValue < ActiveRecord::Migration[5.0]
+  def change
+
+  	change_column :candidates, :article_qualis_a1_total, :float
+    change_column :candidates, :article_qualis_a2_total, :float
+    change_column :candidates, :article_qualis_b1_total, :float
+    change_column :candidates, :article_qualis_b2_total, :float
+    change_column :candidates, :article_qualis_b3_total, :float
+    change_column :candidates, :article_qualis_b4_total, :float
+    change_column :candidates, :article_qualis_b5_total, :float
+    change_column :candidates, :article_qualis_c_total, :float
+    change_column :candidates, :articles_total, :float
+    change_column :candidates, :livros_total, :float
+    change_column :candidates, :capitulos_de_livros_total, :float
+    change_column :candidates, :projetos_de_pesquisa_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_a1_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_a2_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_b1_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_b2_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_b3_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_b4_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_b5_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_qualis_c_total, :float
+    change_column :candidates, :trabalhos_completos_em_anais_de_congresso_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_a1_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_a2_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_b1_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_b2_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_b3_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_b4_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_qualis_c_total, :float
+    change_column :candidates, :resumos_em_anais_de_congresso_total, :float
+    change_column :candidates, :bancas_graduacao_total, :float
+    change_column :candidates, :bancas_mestrado_total, :float
+    change_column :candidates, :bancas_doutorado_total, :float
+    change_column :candidates, :bancas_especializacao_total, :float
+    change_column :candidates, :bancas_total, :float
+    change_column :candidates, :orientacoes_mestrado_total, :float
+    change_column :candidates, :orientacoes_doutorado_total, :float
+    change_column :candidates, :orientacoes_outras_total, :float
+    change_column :candidates, :orientacoes_total, :float
+    change_column :candidates, :total_geral, :float
+  
+
+  #events
+
+    change_column :events, :artigos_qualis_a1, :float
+    change_column :events, :artigos_qualis_a2, :float
+    change_column :events, :artigos_qualis_b1, :float
+    change_column :events, :artigos_qualis_b2, :float
+    change_column :events, :artigos_qualis_b3, :float
+    change_column :events, :artigos_qualis_b4, :float
+    change_column :events, :artigos_qualis_b5, :float
+    change_column :events, :artigos_qualis_c, :float
+    change_column :events, :artigos_qualis_a1_max, :float
+    change_column :events, :artigos_qualis_a2_max, :float
+    change_column :events, :artigos_qualis_b1_max, :float
+    change_column :events, :artigos_qualis_b2_max, :float
+    change_column :events, :artigos_qualis_b3_max, :float
+    change_column :events, :artigos_qualis_b4_max, :float
+    change_column :events, :artigos_qualis_b5_max, :float
+    change_column :events, :artigos_qualis_c_max, :float
+    change_column :events, :livros, :float
+    change_column :events, :livros_max, :float
+    change_column :events, :capitulos_de_livros, :float
+    change_column :events, :capitulos_de_livros_max, :float
+    change_column :events, :projetos_de_pesquisa, :float
+    change_column :events, :projetos_de_pesquisa_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_a1, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_a1_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_a2, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_a2_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b1, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b1_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b2, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b2_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b3, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b3_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b4, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b4_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b5, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_b5_max, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_c, :float
+    change_column :events, :trabalhos_completos_em_anais_de_congresso_qualis_c_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_a1, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_a1_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_a2, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_a2_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b1, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b1_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b2, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b2_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b3, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b3_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b4, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_b4_max, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_c, :float
+    change_column :events, :resumos_em_anais_de_congresso_qualis_c_max, :float
+    change_column :events, :bancas_graduacao, :float
+    change_column :events, :bancas_graduacao_max, :float
+    change_column :events, :bancas_mestrado, :float
+    change_column :events, :bancas_mestrado_max, :float
+    change_column :events, :bancas_doutorado, :float
+    change_column :events, :bancas_doutorado_max, :float
+    change_column :events, :bancas_especializacao, :float
+    change_column :events, :bancas_especializacao_max, :float
+    change_column :events, :orientacoes_mestrado, :float
+    change_column :events, :orientacoes_mestrado_max, :float
+    change_column :events, :orientacoes_doutorado, :float
+    change_column :events, :orientacoes_doutorado_max, :float
+    change_column :events, :orientacoes_outras, :float
+    change_column :events, :orientacoes_outras_max, :float
+  
+  end
+end
+

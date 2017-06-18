@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
-  post 'candidates/process_cv', to: 'candidates#process_cv'
   get 'candidates', to: 'candidates#index'
+  post 'candidates/new', to: 'candidates#new'
+  resources :candidates, except: [:new]
+
+
 end

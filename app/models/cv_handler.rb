@@ -205,6 +205,7 @@ class CvHandler
 	end
 
 	def get_graduation_judgement_participation
+		return [@graduation_judgement_participation] if @graduation_judgement_participation.kind_of?(Hash)
 		@graduation_judgement_participation
 	end
 
