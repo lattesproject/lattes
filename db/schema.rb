@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618183207) do
+ActiveRecord::Schema.define(version: 20170618204042) do
 
   create_table "candidates", force: :cascade do |t|
     t.float    "article_qualis_a1_total"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20170618183207) do
     t.float    "orientacoes_doutorado_max"
     t.float    "orientacoes_outras"
     t.float    "orientacoes_outras_max"
+    t.index ["event_name", "user_id"], name: "index_events_on_event_name_and_user_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

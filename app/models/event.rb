@@ -3,11 +3,10 @@ class Event < ActiveRecord::Base
 	belongs_to :user
 	has_many :candidates
 	validates :user_id, presence: true
-	validates :event_name, presence: true,
-	uniqueness: { case_sensitive: false },
-	length: { minimum: 3, maximum: 25 }
+	validates :event_name, presence: true
+    validates_uniqueness_of :event_name, scope: :user_id
 
-
+  #if any float data field is null set 0 instead	
   def default_values
   	self.artigos_qualis_a1 ||= 0.0
     self.artigos_qualis_a2 ||= 0.0
