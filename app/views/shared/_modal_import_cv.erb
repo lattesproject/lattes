@@ -1,3 +1,4 @@
+<%= csrf_meta_tags %>
 <%= javascript_include_tag "modal_import" %>
 <div class="modal fade" id="modal-import-cv" tabindex="-1" role="dialog" aria-labelledby="modal-import-cv-label">
   <div class="modal-dialog" role="document">
@@ -7,7 +8,8 @@
         <h4 class="modal-title" id="modal-import-cv-label">Importar Currículo</h4>
       </div>
       <div class="modal-body">
-        <form method="post" id="cv_form" class="form" action="/candidates/process_cv" enctype="multipart/form-data">
+        <form method="post" id="cv_form" class="form" action="/candidates/new" enctype="multipart/form-data">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <div class="form-group">
             <label for="cv_file" class="control-label">Currículo:</label>
             <input type="file" id="cv_file" name="datafile">
