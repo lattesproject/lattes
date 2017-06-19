@@ -26,18 +26,17 @@ class CvHandler
 		@json_qualis =  File.read(get_file_periodico)
 		@json_qualis = JSON.parse(@json_qualis)
 		@found_article_total_points = 0.0
-
-		@articles = @json_cv['PRODUCAO_BIBLIOGRAFICA']['ARTIGOS_PUBLICADOS']['ARTIGO_PUBLICADO']
-		@books = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['LIVROS_PUBLICADOS_OU_ORGANIZADOS']['LIVRO_PUBLICADO_OU_ORGANIZADO']
-		@book_caps = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['CAPITULOS_DE_LIVROS_PUBLICADOS']['CAPITULO_DE_LIVRO_PUBLICADO']
-		@projects = @json_cv['DADOS_GERAIS']['ATUACOES_PROFISSIONAIS']['ATUACAO_PROFISSIONAL'][4]['ATIVIDADES_DE_PARTICIPACAO_EM_PROJETO']['PARTICIPACAO_EM_PROJETO']
-		@doctor_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_DOUTORADO']
-		@master_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_MESTRADO']
-		@postgraduate_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO']
-		@graduation_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_GRADUACAO']
-		@master_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO']
-		@doctor_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO']
-		@other_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['OUTRAS_ORIENTACOES_CONCLUIDAS']
+		@articles = @json_cv['PRODUCAO_BIBLIOGRAFICA']['ARTIGOS_PUBLICADOS']['ARTIGO_PUBLICADO'] || [] rescue []
+		@books = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['LIVROS_PUBLICADOS_OU_ORGANIZADOS']['LIVRO_PUBLICADO_OU_ORGANIZADO'] || [] rescue []
+		@book_caps = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['CAPITULOS_DE_LIVROS_PUBLICADOS']['CAPITULO_DE_LIVRO_PUBLICADO'] || [] rescue []
+		@projects = @json_cv['DADOS_GERAIS']['ATUACOES_PROFISSIONAIS']['ATUACAO_PROFISSIONAL'][4]['ATIVIDADES_DE_PARTICIPACAO_EM_PROJETO']['PARTICIPACAO_EM_PROJETO'] || [] rescue []
+		@doctor_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_DOUTORADO'] || [] rescue []
+		@master_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_MESTRADO'] || [] rescue []
+		@postgraduate_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO'] || [] rescue []
+		@graduation_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_GRADUACAO'] || [] rescue []
+		@master_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO'] || [] rescue []
+		@doctor_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO'] || [] rescue []
+		@other_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['OUTRAS_ORIENTACOES_CONCLUIDAS'] || [] rescue []
 	end
 
 	def get_file_periodico
@@ -83,7 +82,6 @@ class CvHandler
 		article_array_not_found
 	end
 
-	#remember to remove all the paramaters you don't need them anymore since you have access to the Events from here
 	def get_book_total_points
 		size = @books.length
 		size = @event.livros_max if size > @event.livros_max
@@ -162,6 +160,59 @@ class CvHandler
 		size * @event.orientacoes_outras
 	end
 
+	def get_books
+		return [@books] if @books.kind_of?(Hash)
+		@books
+	end
+
+	def get_book_caps
+		return [@book_caps] if @book_caps.kind_of?(Hash)
+		@book_caps
+	end
+
+	def get_doctor_judgement_participation
+		return [@doctor_judgement_participation] if @doctor_judgement_participation.kind_of?(Hash)
+		@doctor_judgement_participation
+	end
+
+	def get_master_judgement_participation
+		return [@master_judgement_participation] if @master_judgement_participation.kind_of?(Hash)
+		@master_judgement_participation
+	end
+
+	def get_postgraduate_judgement_participation
+		return [@postgraduate_judgement_participation] if @postgraduate_judgement_participation.kind_of?(Hash)
+		@postgraduate_judgement_participation
+	end
+
+	def get_graduation_judgement_participation
+		return [@graduation_judgement_participation] if @graduation_judgement_participation.kind_of?(Hash)
+		@graduation_judgement_participation
+	end
+
+	def get_doctor_tutoring
+		return [@doctor_tutoring] if @doctor_tutoring.kind_of?(Hash)
+		@doctor_tutoring
+	end
+
+	def get_master_tutoring
+		return [@master_tutoring] if @master_tutoring.kind_of?(Hash)
+		@master_tutoring
+	end
+
+	def get_other_tutoring
+		return [@other_tutoring] if @other_tutoring.kind_of?(Hash)
+		@other_tutoring
+	end
+
+	def get_projects
+		projects_obtained = Array.new
+		@projects.each do |project|
+			projects_obtained = projects_obtained + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? [project["PROJETO_DE_PESQUISA"]] : project["PROJETO_DE_PESQUISA"])
+		end
+		projects_obtained
+	end
+
 	def qualis_point(qualis)
 		case qualis
 		when 'A1'
@@ -181,52 +232,6 @@ class CvHandler
 		when 'C'
 			return @event.artigos_qualis_c
 		end
-	end
-
-	def get_books
-		@books
-	end
-
-	def get_book_caps
-		@book_caps
-	end
-
-	def get_doctor_judgement_participation
-		@doctor_judgement_participation
-	end
-
-	def get_master_judgement_participation
-		@master_judgement_participation
-	end
-
-	def get_postgraduate_judgement_participation
-		return [@postgraduate_judgement_participation] if @postgraduate_judgement_participation.kind_of?(Hash)
-		@postgraduate_judgement_participation
-	end
-
-	def get_graduation_judgement_participation
-		@graduation_judgement_participation
-	end
-
-	def get_doctor_tutoring
-		return [@doctor_tutoring] if @doctor_tutoring.kind_of?(Hash)
-		@doctor_tutoring
-	end
-
-	def get_master_tutoring
-		@master_tutoring
-	end
-
-	def get_other_tutoring
-		@other_tutoring
-	end
-
-	def get_projects
-		projects_obtained = Array.new
-		@projects.each do |project|
-			projects_obtained = projects_obtained + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? [project["PROJETO_DE_PESQUISA"]] : project["PROJETO_DE_PESQUISA"])
-		end
-		projects_obtained
 	end
 
 end
