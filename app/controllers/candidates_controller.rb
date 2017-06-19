@@ -17,15 +17,10 @@ class CandidatesController < ApplicationController
 
 	def create
 		puts params[:articles_total]
-		puts "Biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiitccccccccccccccccchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
 
 		@candidate = Candidate.new(candidate_params)
-		#@candidate = Candidate.new(params.require(:candidate).permit(:event_id))
-		#@candidate = Candidate.new(params[:event_id])
-		#@candidate = Candidate.new(event_id: 1)
-
+		
 		if @candidate.save
-			puts "Biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiitccccccccccccccccchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 2"
 			flash[:success] = "Candidato criado com sucesso"
 			redirect_to candidate_path(@candidate)
 		else
