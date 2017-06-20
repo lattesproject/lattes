@@ -19,6 +19,7 @@ class CvHandler
 	@master_tutoring
 	@other_tutoring
 	@projects
+	@name
 	
 	def initialize(xml,event)
 		@event = event
@@ -26,6 +27,7 @@ class CvHandler
 		@json_qualis =  File.read(get_file_periodico)
 		@json_qualis = JSON.parse(@json_qualis)
 		@found_article_total_points = 0.0
+		@name = @json_cv['DADOS_GERAIS']['NOME_COMPLETO']
 		@articles = @json_cv['PRODUCAO_BIBLIOGRAFICA']['ARTIGOS_PUBLICADOS']['ARTIGO_PUBLICADO'] || [] rescue []
 		@books = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['LIVROS_PUBLICADOS_OU_ORGANIZADOS']['LIVRO_PUBLICADO_OU_ORGANIZADO'] || [] rescue []
 		@book_caps = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['CAPITULOS_DE_LIVROS_PUBLICADOS']['CAPITULO_DE_LIVRO_PUBLICADO'] || [] rescue []
@@ -211,6 +213,14 @@ class CvHandler
 			projects_obtained = projects_obtained + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? [project["PROJETO_DE_PESQUISA"]] : project["PROJETO_DE_PESQUISA"])
 		end
 		projects_obtained
+	end
+
+	def get_name
+		@name
+	end
+
+	def get_total
+		get_articles_found_total_points + get_book_total_points + get_book_cap_total_points + get_project_total_points + get_doctor_judgement_participation_points + get_master_judgement_participation_points + get_postgraduate_judgement_participation_points + get_graduation_judgement_participation_points + get_doctor_tutoring_points + get_master_tutoring_points + get_other_tutoring_points
 	end
 
 	def qualis_point(qualis)
