@@ -17,11 +17,11 @@
 <% @user_events.each do |event| %>
 <tr>
 	<td><%= link_to event.event_name, event_path(event) %></td>
-	<td><%= event.candidates.count %></td>
+	<td><%= event.candidates.count%></td>
 	<td><%= time_ago_in_words(event.created_at) %> ago</td>
 	<td>
 		<%= link_to "Avaliar Candidato", "", {"data-event"=>event.id, "data-toggle"=> "modal", "data-target"=> "#modal-import-cv", "style"=> "padding-left:6px"} %>
-		<%= link_to "Visualizar Candidatos", event_path(event), style: "padding-left:6px" %>
+		<%= link_to "Visualizar Candidatos", candidates_path(:event=>event.id), style: "padding-left:6px" %>
 		<% if logged_in? && (current_user == event.user|| current_user.admin?) %>
 			
 			<%= link_to "Deletar", event_path(event), method: :delete,

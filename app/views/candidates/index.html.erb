@@ -1,0 +1,23 @@
+<h1 align="center">Candidatos</h1>
+
+<div class="panel panel-default">
+		<table class="table table-bordered" >
+			<thead>
+				<tr>
+
+					<th>Candidato</th>
+					<th>Nome do Evento</th>
+					<th>Total de Pontos</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% @candidates.each do |candidate| %>
+		<tr>
+			<td><%= link_to candidate.nome, candidate_path(candidate) %></td>
+			<td><%= candidate.event.event_name%></td>
+			<td><%= candidate.total_geral %></td>
+		</tr>
+		<% end %>
+		</tbody>
+		</table>
+</did>

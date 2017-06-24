@@ -1,12 +1,12 @@
 class CandidatesController < ApplicationController
 	before_action :require_user
 	before_action :require_same_user, only: [:edit, :update, :destroy]
-	before_action :require_admin, only: [:index]
 	before_action :set_candidate, only: [:show]
 
 
 	def index
-		
+		@event = Event.find(params[:event])
+		@candidates = @event.candidates
 	end
 
 	def new
