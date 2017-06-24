@@ -51,10 +51,11 @@ class CvHandler
 	end
 
 	def get_articles_found_total_points
+		found_article_total_points = 0
 		get_articles_found.each do |article|
-			@found_article_total_points = @found_article_total_points + qualis_point(article['qualis'])
+			found_article_total_points = found_article_total_points + qualis_point(article['qualis'])
 		end
-		@found_article_total_points
+		found_article_total_points
 	end
 
 	def get_articles_found

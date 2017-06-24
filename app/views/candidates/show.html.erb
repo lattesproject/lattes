@@ -1,0 +1,51 @@
+<center><h3><b><%=@candidate.nome %></b></h3></center>
+
+
+<center>
+  <table class="table table-striped table-bordered candidate">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Entidade</th>
+        <th>Pontuação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Artigos</td>
+        <td><%=@candidate.articles_total%></td>     
+      </tr>
+      <tr>
+        <td>Livros</td>
+        <td><%=@candidate.livros_total%></td>     
+      </tr>
+      <tr>
+        <td>Capítulo de Livros</td>
+        <td><%=@candidate.capitulos_de_livros_total%></td>
+      </tr>
+      <tr>
+        <td>Projeto de Pesquisa</td>
+        <td><%=@candidate.projetos_de_pesquisa_total%></td>
+      </tr>
+      <tr>
+        <td>Trabalhos Completos</td>
+        <td><%=@candidate.trabalhos_completos_em_anais_de_congresso_total%></td>
+      </tr>
+      <tr>
+        <td>Resumos</td>
+        <td><%=@candidate.resumos_em_anais_de_congresso_total%></td>
+      </tr>
+      <tr>
+        <td>Bancas</td>
+        <td><%=@candidate.bancas_total%></td>
+      </tr>
+      <tr>
+        <td>Orientações</td>
+        <td><%=@candidate.orientacoes_total%></td>
+      </tr>
+      <tr>
+        <td><b>Total</b></td>
+        <td><b><%=@candidate.total_geral%></b></td>
+      </tr>
+    </tbody>
+  </table>
+</center>

@@ -2,6 +2,8 @@ class CandidatesController < ApplicationController
 	before_action :require_user
 	before_action :require_same_user, only: [:edit, :update, :destroy]
 	before_action :require_admin, only: [:index]
+	before_action :set_candidate, only: [:show]
+
 
 	def index
 		
@@ -13,6 +15,7 @@ class CandidatesController < ApplicationController
 		@event = Event.find(params[:events][:event_id])
 		@cv_handler = CvHandler.new(uploaded_xml_cv,@event)
 		@candidate = Candidate.new
+
 	end
 
 	def create
@@ -31,6 +34,10 @@ class CandidatesController < ApplicationController
 	def show
 	end
 
+	private
+	def set_candidate
+		@candidate = Candidate.find(params[:id])
+	end
 
 	def candidate_params
 		params.require(:candidate).permit(
