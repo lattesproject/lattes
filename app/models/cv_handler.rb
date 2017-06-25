@@ -3,24 +3,7 @@ require 'active_support/all'
 require 'nokogiri'
 
 class CvHandler
-	
-	@json_cv
-	@json_qualis
-	@found_article_total_points
-	@event
-	@articles
-	@books
-	@book_caps
-	@doctor_judgement_participation
-	@master_judgement_participation
-	@postgraduate_judgement_participation
-	@graduation_judgement_participation
-	@doctor_tutoring
-	@master_tutoring
-	@other_tutoring
-	@projects
-	@name
-	
+		
 	def initialize(xml,event)
 		@event = event
 		@json_cv = convert_xml_json(xml)['CURRICULO_VITAE']
@@ -32,6 +15,8 @@ class CvHandler
 		@books = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['LIVROS_PUBLICADOS_OU_ORGANIZADOS']['LIVRO_PUBLICADO_OU_ORGANIZADO'] || [] rescue []
 		@book_caps = @json_cv['PRODUCAO_BIBLIOGRAFICA']['LIVROS_E_CAPITULOS']['CAPITULOS_DE_LIVROS_PUBLICADOS']['CAPITULO_DE_LIVRO_PUBLICADO'] || [] rescue []
 		@projects = @json_cv['DADOS_GERAIS']['ATUACOES_PROFISSIONAIS']['ATUACAO_PROFISSIONAL'][4]['ATIVIDADES_DE_PARTICIPACAO_EM_PROJETO']['PARTICIPACAO_EM_PROJETO'] || [] rescue []
+		@completed_works = @json_cv['PRODUCAO_BIBLIOGRAFICA']['TRABALHOS_EM_EVENTOS']['TRABALHO_EM_EVENTOS'].select{|item| item['DADOS_BASICOS_DO_TRABALHO']['NATUREZA']==('COMPLETO')} || [] rescue []
+		@summarized_works = @json_cv['PRODUCAO_BIBLIOGRAFICA']['TRABALHOS_EM_EVENTOS']['TRABALHO_EM_EVENTOS'].select{|item| item['DADOS_BASICOS_DO_TRABALHO']['NATUREZA']==('RESUMO')}  || [] rescue []
 		@doctor_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_DOUTORADO'] || [] rescue []
 		@master_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_MESTRADO'] || [] rescue []
 		@postgraduate_judgement_participation = @json_cv['DADOS_COMPLEMENTARES']['PARTICIPACAO_EM_BANCA_TRABALHOS_CONCLUSAO']['PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO'] || [] rescue []
@@ -108,17 +93,69 @@ class CvHandler
 	end
 
 	def get_completed_work_in_congress_total_points
-		completed_works = @json_cv['PRODUCAO_BIBLIOGRAFICA']['TRABALHOS_EM_EVENTOS']['TRABALHO_EM_EVENTOS'].select{|item| item['DADOS_BASICOS_DO_TRABALHO']['NATUREZA']==('COMPLETO')}
-		size = completed_works.length
-		size = max if size > max
-		size * point_value
+		found_completed_work_total_points = 0
+		get_completed_work_in_congress_found.each do |completed_work|
+			found_completed_work_total_points = found_completed_work_total_points + qualis_point(completed_work['qualis'])
+		end
+		found_completed_work_total_points
+	end
+
+	def get_completed_work_in_congress_found
+		completed_work_in_congress_array_found = Array.new
+		@completed_works.each do |completed_work|
+			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(@json_qualis["periodico"].has_key?(completed_work_periodic))
+				completed_work.store('qualis',@json_qualis["periodico"][completed_work_periodic])
+				completed_work_in_congress_array_found.push completed_work
+			end
+		end
+		completed_work_in_congress_array_found
+	end
+
+	def get_completed_work_in_congress_not_found
+		completed_work_in_congress_array_not_found = Array.new
+		@completed_works.each do |completed_work|
+			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic))
+				completed_work_in_congress_array_not_found.push completed_work
+			end
+		end
+		completed_work_in_congress_array_not_found
+	end
+
+	def get_summarized_work_in_congress_found
+		summarized_work_in_congress_found = Array.new
+		@summarized_works.each do |summarized_work|
+			summarized_work_periodic = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(@json_qualis["periodico"].has_key?(summarized_work_periodic))
+				summarized_work.store('qualis',@json_qualis["periodico"][summarized_work_periodic])
+				summarized_work_in_congress_found.push summarized_work
+			end
+		end
+		summarized_work_in_congress_found
 	end
 
 	def get_summarized_work_in_congress_total_points
-		@summarized_works = @json_cv['PRODUCAO_BIBLIOGRAFICA']['TRABALHOS_EM_EVENTOS']['TRABALHO_EM_EVENTOS'].select{|item| item['DADOS_BASICOS_DO_TRABALHO']['NATUREZA']==('RESUMO')}
-		size = @summarized_works.length
-		size = max if size > max
-		@summarized_work_in_congress_total_points = size * point_value
+		summarized_work_in_congress_total_points = 0
+		get_summarized_work_in_congress_found.each do |summarized_work|
+			summarized_work_in_congress_total_points = summarized_work_in_congress_total_points + qualis_point(summarized_work['qualis'])
+		end
+		summarized_work_in_congress_total_points
+	end
+
+	def get_summarized_work_in_congress_not_found
+		summarized_work_in_congress_found = Array.new
+		@summarized_works.each do |summarized_work|
+			summarized_work_periodic = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(!@json_qualis["periodico"].has_key?(summarized_work_periodic))
+				summarized_work_in_congress_found.push summarized_work
+			end
+		end
+		summarized_work_in_congress_found
 	end
 
 	def get_doctor_judgement_participation_points
