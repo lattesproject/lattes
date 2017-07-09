@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 <div class="panel-heading text-center"><h4><strong>Eventos</strong></h4></div>
 <div class="panel-body form-inline">
-	<input type="text" class="form-control" placeholder="Pesquisar">
+	
 	<%= link_to "Novo Evento", new_event_path, class: "btn btn-primary pull-right" %>
 </div>
 <table class="table table-bordered" >
@@ -16,9 +16,9 @@
 	<tbody>
 <% @user_events.each do |event| %>
 <tr>
-	<td><%= link_to event.event_name, event_path(event) %></td>
-	<td><%= event.candidates.count%></td>
-	<td><%= time_ago_in_words(event.created_at) %> ago</td>
+	<td align="center"><%= link_to event.event_name, event_path(event) %></td>
+	<td align="center"><%= event.candidates.count%></td>
+	<td align="center"><%= time_ago_in_words(event.created_at) %> ago</td>
 	<td>
 		<%= link_to "Avaliar Candidato", "", {"data-event"=>event.id, "data-toggle"=> "modal", "data-target"=> "#modal-import-cv", "style"=> "padding-left:6px"} %>
 		<%= link_to "Visualizar Candidatos", candidates_path(:event=>event.id), style: "padding-left:6px" %>

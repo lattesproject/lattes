@@ -65,12 +65,17 @@
 
 
              <table class="table table-bordered" >
+
             <thead>
                <tr>
                   <th>Título do Artigo</th>
                   <th>Periódico ou Revista</th>
-                  <th>Categoria</th>
                   <th>Ano</th>
+                  <th>Categoria</th>
+                  <th>Sugestões</th>
+                  <th>Aceitar</th> 
+                  <th>Pont. Manual</th>
+                  <th>Confirmar</th>  
                </tr>
             </thead>
             <tbody>
@@ -78,8 +83,19 @@
                <tr>
                   <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["TITULO_DO_ARTIGO"] %></td>
                   <td><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
-                  <td></td>
-                  <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"] %></td>
+                  <td align="center"><%= article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"] %></td>
+                  <td align="center"></td>
+                  <td id="start"> <%= select("article", "qualis", article['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão'}, class:"form-control") %>
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block" attr="">Aceitar</button>
+                  </td>
+                  <td align="center" >
+                     <input type="text" class="form-control">
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block" attr="">Confirmar</button>
+                  </td>
                </tr>
                <% end %>
             </tbody>

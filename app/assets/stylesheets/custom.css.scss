@@ -105,3 +105,15 @@ div.dataTables_filter {
 #DataTables_Table_0_wrapper > div.panel-body.form-inline{
     padding: 8px;
 }
+
+
+#DataTables_Table_1 > thead > tr > th:nth-child(5){
+	width: 200px !important;
+}
+
+.form-inline .form-control {
+    display: inline-block;
+    width: 100% !important; 
+    vertical-align: middle;
+}
+

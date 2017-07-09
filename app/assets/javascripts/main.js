@@ -57,3 +57,13 @@ $(document).ready(function() {
         
     });
 });
+
+
+$(document).ready(function(){
+      $('select').on("change",function(e){
+           if($(this).find("option:selected").text()!='Sugestão'){
+                     $(this).closest('td').prev().text($(this).find("option:selected").attr('qualis'));
+                }
+      });
+});
+
