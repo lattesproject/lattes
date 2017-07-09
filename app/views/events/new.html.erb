@@ -5,13 +5,29 @@
             <%=form_for(@event, :html=> {class: "form-horizontal", role: "form"}) do |f| %>
                 <div class="row">
                     <div class="form-group form-group-lg">
-                        <div class="control-label col-sm-3 col-sm-offset-1">
+                        <div class="control-label col-sm-2">
                             <%=f.label :event_name, 'Nome do evento' %>
                         </div>
                         <div class="col-sm-4">
                             <%=f.text_field :event_name, class: "form-control", autofocus: true %>
                         </div>
-                    </div>
+                         <div class="col-sm-2">
+                            <div class='input-group date'>
+                                <input type='text' class="form-control datepicker" placeholder="Ano Início"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                                <div class='input-group date'>
+                                    <input type='text' class="form-control datepicker" placeholder="Ano Final" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                </div>
+                        </div>
+                    </div>       
                 </div>
                 <div class="grupo">
                     <div class="row">

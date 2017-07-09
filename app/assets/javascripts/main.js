@@ -53,17 +53,24 @@ $(document).ready(function() {
         
         $(this).parents(".grupo").find(".btn.btn-default.dropdown-toggle").removeClass("disabled");
         
-        $(this).parents(".form-group").remove();
-        
+        $(this).parents(".form-group").remove();   
     });
-});
 
-
-$(document).ready(function(){
-      $('select').on("change",function(e){
+    /*brings the qualis category value from the option selected on the candidates page*/
+     $('select').on("change",function(e){
            if($(this).find("option:selected").text()!='Sugestão'){
                      $(this).closest('td').prev().text($(this).find("option:selected").attr('qualis'));
                 }
       });
+
+     /*Makes datepicker show only the year*/
+      $(".datepicker").datepicker( {
+        format: " yyyy",  //see there is extra space in format, dont remove it
+        viewMode: "years", 
+        minViewMode: "years"
+    });
 });
+
+
+
 

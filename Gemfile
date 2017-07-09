@@ -26,6 +26,9 @@ gem 'coffee-rails', '~> 4.2'
 gem 'coffee-script-source', '1.8.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+#add bootstrap datepicker
+gem 'bootstrap-datepicker-rails', :require => 'bootstrap-datepicker-rails',
+                              :git => 'git://github.com/Nerian/bootstrap-datepicker-rails.git'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
