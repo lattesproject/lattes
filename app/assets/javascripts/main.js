@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    
+    /*acumulate the manual pontuation for article in this variable*/
+    var article_total_points_suggestion=0;
     $(".form-group").on('click','.add-categoria', function() {
         
         formGroup = $('<div class="row form-group"><div class="col-sm-offset-2"></div></div>');
@@ -57,12 +58,83 @@ $(document).ready(function() {
     });
 
     /*brings the qualis category value from the option selected on the candidates page*/
-     $('select').on("change",function(e){
+     $('.select_qualis').on("change",function(e){
            if($(this).find("option:selected").text()!='Sugestão'){
                      $(this).closest('td').prev().text($(this).find("option:selected").attr('qualis'));
+                }else{
+                     $(this).closest('td').prev().text('');
                 }
       });
 
+      
+      /*manual through suggestions*/
+      $('.article_no_found_total_points_suggestion').on("click",function(){
+                if($(this).closest('td').prev().find("option:selected").text()!="Sugestão"){           
+                    if($(this).text()=="Aceitar"){
+                    $(this).closest('td').prev().find('select').attr("disabled", true);
+                    $(this).text("Cancelar");
+                    $(this).closest('td').next().next().find('button').attr("disabled", true);
+                    $(this).closest('td').next().find('input').attr("disabled", true);
+                     /* how much each value worth */             
+                    article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
+                    parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+
+                    //adding result to total result at the top of the page 
+                    $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
+                    + parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2) );
+
+                   }else{
+                       $(this).text("Aceitar");
+                       $(this).closest('td').prev().find('select').attr("disabled", false);
+                       $(this).closest('td').next().next().find('button').attr("disabled", false);
+                       $(this).closest('td').next().find('input').attr("disabled", false);
+                       article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) - 
+                       parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+
+                    //adding result to total result at the top of the page 
+                    $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
+                    - parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2) );
+                }        
+               $('#article_no_found_total_points').text(article_total_points_suggestion);
+               }else{
+                    alert("Selecione uma opção");
+               }
+          });
+     
+
+     /*manual calculation through the input field*/
+      $('.article_no_found_total_points_manual').on("click",function(){
+        var validate_manual_field = parseFloat($(this).closest('td').prev().find('input').val());
+        if(!isNaN(validate_manual_field) && validate_manual_field>=0){
+
+           if($(this).text()=="Confirmar"){
+             $(this).text("Cancelar");
+             $(this).closest('td').prev().prev().find('button').attr("disabled", true);
+             $(this).closest('td').prev().prev().prev().find('select').attr("disabled", true);
+             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
+             parseFloat($(this).closest('td').prev().find('input').val()) ).toFixed(2);
+             $(this).closest('td').prev().find('input').attr("disabled", true);
+
+             //adding result to total result at the top of the page 
+            $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
+            + parseFloat($(this).closest('td').prev().find('input').val())).toFixed(2) );
+           }else{
+             $(this).text("Confirmar");
+             $(this).closest('td').prev().prev().find('button').attr("disabled", false);
+             $(this).closest('td').prev().prev().prev().find('select').attr("disabled", false);
+             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) - 
+             parseFloat($(this).closest('td').prev().find('input').val()) ).toFixed(2);
+
+             //adding result to total result at the top of the page 
+             $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
+             - parseFloat($(this).closest('td').prev().find('input').val())).toFixed(2) );
+             $(this).closest('td').prev().find('input').attr("disabled", false);
+           }
+          $('#article_no_found_total_points').text(article_total_points_suggestion);
+      }else{
+        alert('Entre uma pontuação válida');
+      }
+      });
      /*Makes datepicker show only the year*/
       $(".datepicker").datepicker( {
         format: " yyyy",  //see there is extra space in format, dont remove it

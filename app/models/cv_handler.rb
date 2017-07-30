@@ -290,7 +290,7 @@ def get_suggestions(article_periodic)
     @json_qualis["periodico"].each do |periodic, qualis|
       dif = levenshtein_distance(article_periodic, periodic)
       if dif < 27
-        suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif})
+        suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif , 'value'=>qualis_point(qualis)})
       end
     end
 

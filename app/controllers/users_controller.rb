@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	before_action :require_admin, only: [:destroy]
 
 	def index
-		@users = User.paginate(page: params[:page], per_page: 5)
+		@users = User.All
 	end
 
 	def new
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 	end
 
 	def show
-		@user_events = @user.events.paginate(page: params[:page], per_page: 5)
+		@user_events = @user.events
 	end
 
 	def destroy
