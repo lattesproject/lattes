@@ -1,27 +1,509 @@
-<h2 align="center">Title: <%= @event.event_name %></h2>
-<div class="well col-xs-8 col-xs-offset-2">
-	<% if @event.user %>
-	<ul class="listing">
-		<div class="row center">
-			<div class="col-md-4 col-md-offset-4">
-				<li>Created by:</li>
-				<li class="event-title">
-				<%= link_to @event.user.username, user_path(@event.user) %>
-				</li>
-				<li><small>
-				<%= pluralize(@event.user.events.count, "evento") if @event.user.events %>
-				</small></li>
-			</div>
-		</div>
-	</ul>
-	<% end %>
-	<hr>
-	<div class="event-actions">
-		<% if logged_in? && current_user == @event.user %>
-		<%= link_to "Delete esse evento", event_path(@event), method: :delete,
-		data: { confirm: "Tem certeza que deseja deletar esse evento?"},
-		class: "btn btn-xs btn-danger" %>
-		<%= link_to "Visualizar todos eventos", user_path(current_user), class: "btn btn-xs btn-success" %>
-		<% end %>
-	</div>
-</div>
+<%=render 'shared/errors', obj: @event %>
+<%= javascript_include_tag "main" %>
+    <div class='row'>
+        <div class='col-xs-12'>
+            <%=form_for(@event, :html=> {class: "form-horizontal", role: "form"}) do |f| %>
+                <div class="row">
+                    <div class="form-group form-group-lg">
+                        <div class="control-label col-sm-2">
+                            <%=f.label :event_name, 'Nome do evento' %>
+                        </div>
+                        <div class="col-sm-4">
+                            <%=f.text_field :event_name, class: "form-control", autofocus: true, disabled: true%>
+                        </div>
+                         <div class="col-sm-2">
+                            <div class='input-group date'>
+                                <input type='text' class="form-control datepicker" placeholder="Ano Início" disabled />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                                <div class='input-group date'>
+                                    <input type='text' class="form-control datepicker" placeholder="Ano Final" disabled />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                </div>
+                        </div>
+                    </div>       
+                </div>
+                <div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Geral</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :livros, 'Livros' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :livros, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :livros_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :capitulos_de_livros, 'Capítulos de Livros' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :capitulos_de_livros, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :capitulos_de_livros_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :projetos_de_pesquisa, 'Projetos de Pesquisa' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :projetos_de_pesquisa, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :projetos_de_pesquisa_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Trabalho Completo em Anais de Congresso</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+						<div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_a1, 'Qualis A1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_a1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_a1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_a2, 'Qualis A2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_a2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_a2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_b1, 'Qualis B1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_b2, 'Qualis B2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_b3, 'Qualis B3' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b3, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b3_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_b4, 'Qualis B4' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b4, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b4_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_b5, 'Qualis B5' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b5, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_b5_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :trabalhos_completos_em_anais_de_congresso_qualis_c, 'Qualis C' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_c, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :trabalhos_completos_em_anais_de_congresso_qualis_c_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+				<div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Resumo em Anais de Congresso</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+						<div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_a1, 'Qualis A1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_a1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_a1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_a2, 'Qualis A2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_a2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_a2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_b1, 'Qualis B1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_b2, 'Qualis B2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_b3, 'Qualis B3' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b3, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b3_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_b4, 'Qualis B4' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b4, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_b4_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :resumos_em_anais_de_congresso_qualis_c, 'Qualis C' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_c, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :resumos_em_anais_de_congresso_qualis_c_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+				<div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Artigos</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+						<div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_a1, 'Qualis A1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_a1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_a1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_a2, 'Qualis A2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_a2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_a2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_b1, 'Qualis B1' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b1, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b1_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_b2, 'Qualis B2' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b2, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b2_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_b3, 'Qualis B3' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b3, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b3_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_b4, 'Qualis B4' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b4, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b4_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_b5, 'Qualis B5' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b5, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_b5_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :artigos_qualis_c, 'Qualis C' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_c, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :artigos_qualis_c_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Bancas</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+						<div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :bancas_graduacao, 'Graduação' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_graduacao, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_graduacao_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :bancas_mestrado, 'Mestrado' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_mestrado, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_mestrado_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :bancas_doutorado, 'Doutorado' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_doutorado, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_doutorado_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :bancas_especializacao, 'Especialização' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_especializacao, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :bancas_especializacao_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="grupo">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-1">
+                            <legend>Orientações</legend>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+						<div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :orientacoes_mestrado, 'Mestrado' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_mestrado, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_mestrado_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :orientacoes_doutorado, 'Doutorado' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_doutorado, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_doutorado_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <%=f.label :orientacoes_outras, 'Outras' %>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_outras, class: "form-control", placeholder: "valor", autofocus: true ,disabled: true%>
+                            </div>
+                            <div class="col-sm-2">
+                                <%=f.text_field :orientacoes_outras_max, class: "form-control", placeholder: "máximo", autofocus: true ,disabled: true%>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <% end %>
+        </div>
+    </div>

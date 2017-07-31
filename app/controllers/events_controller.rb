@@ -14,6 +14,21 @@ class EventsController < ApplicationController
 		@event = Event.new
 	end
 
+	def edit
+	end
+
+	def update
+		
+		if @event.candidates.count==0
+			@event.update(event_params)
+			flash[:success] = "Evento atualizado com sucesso"
+			redirect_to event_path(@event)
+		else
+			flash[:danger] = "Atenção verifique se o evento já possui candidatos"
+			redirect_to user_path(@event.user)
+		end
+	end
+
 	def create
 		@event = Event.new(event_params)
 		@event.user = current_user
@@ -28,9 +43,6 @@ class EventsController < ApplicationController
 	def show
 	end
 
-	def update
-		
-	end
 
 	def destroy
 		@event.destroy
@@ -128,4 +140,6 @@ class EventsController < ApplicationController
 			redirect_to user_path(current_user)
 		end
 	end
+
+
 end
