@@ -342,17 +342,32 @@
                <tr>
                   <th>Título do Trabalho</th>
                   <th>Título dos anais de congresso</th>
-                  <th>País</th>
                   <th>Ano</th>
+                  <th>Categoria</th>
+                  <th>Sugestões</th>
+                  <th>Aceitar</th> 
+                  <th>Pont. Manual</th>
+                  <th>Confirmar</th> 
                </tr>
             </thead>
             <tbody>
-               <% @cv_handler.get_summarized_work_in_congress_not_found.each do |summarized_work| %>
+               <% @cv_handler.get_summarized_work_not_found.each do |summarized_work| %>
                <tr>
                   <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["TITULO_DO_TRABALHO"] %></td>
                   <td><%= summarized_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
-                  <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["PAIS_DO_EVENTO"] %></td>
+                  <td></td>
+                  <td> <%= select("summarized_work", "qualis", summarized_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block article_no_found_total_points_suggestion " attr="">Aceitar</button>
+                  </td>
+                  <td align="center" >
+                     <input type="text" class="form-control">
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block  article_no_found_total_points_manual" attr="">Confirmar</button>
+                  </td>
                </tr>
                <% end %>
             </tbody>
@@ -405,17 +420,32 @@
                <tr>
                   <th>Título do Trabalho</th>
                   <th>Título dos anais de congresso</th>
-                  <th>País</th>
                   <th>Ano</th>
+                   <th>Categoria</th>
+                   <th>Sugestões</th>
+                  <th>Aceitar</th> 
+                  <th>Pont. Manual</th>
+                  <th>Confirmar</th> 
                </tr>
             </thead>
             <tbody>
-               <% @cv_handler.get_completed_work_in_congress_not_found.each do |completed_work| %>
+               <% @cv_handler.get_completed_work_in_congress_not_found_2.each do |completed_work| %>
                <tr>
                   <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["TITULO_DO_TRABALHO"] %></td>
                   <td><%= completed_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
-                  <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["PAIS_DO_EVENTO"] %></td>
+                  <td></td>
+                   <td> <%= select("completed_work", "qualis", completed_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block article_no_found_total_points_suggestion " attr="">Aceitar</button>
+                  </td>
+                  <td align="center" >
+                     <input type="text" class="form-control">
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-block  article_no_found_total_points_manual" attr="">Confirmar</button>
+                  </td>
                </tr>
                <% end %>
             </tbody>
@@ -504,7 +534,7 @@
                <tr>
                   <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["TITULO"] %></td>
                   <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DO_ORIENTADO"] %></td>
-                  <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NATUREZA"] %></td>
+                  <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NATUREZA"].gsub!('_',' ') %></td>
                   <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DA_INSTITUICAO"] %></td>
                   <td><%= other_tutoring["DETALHAMENTO_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["NOME_DO_CURSO"] %></td>
                   <td><%= other_tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["ANO"] %></td>

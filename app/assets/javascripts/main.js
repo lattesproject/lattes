@@ -104,30 +104,34 @@ $(document).ready(function() {
 
      /*manual calculation through the input field*/
       $('.article_no_found_total_points_manual').on("click",function(){
+        //get what is in the input box and put in the variable validate_manual_field
         var validate_manual_field = parseFloat($(this).closest('td').prev().find('input').val());
+        //verify if this value is negative or anything but a number
         if(!isNaN(validate_manual_field) && validate_manual_field>=0){
-
+            /*is the name "confirmar?" change it to "cancelar"*/
            if($(this).text()=="Confirmar"){
              $(this).text("Cancelar");
+             /*disable all other fields until the name come back to "confirmar"*/
              $(this).closest('td').prev().prev().find('button').attr("disabled", true);
              $(this).closest('td').prev().prev().prev().find('select').attr("disabled", true);
-             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
-             parseFloat($(this).closest('td').prev().find('input').val()) ).toFixed(2);
              $(this).closest('td').prev().find('input').attr("disabled", true);
+             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
+             validate_manual_field).toFixed(2);
+             
 
              //adding result to total result at the top of the page 
             $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
-            + parseFloat($(this).closest('td').prev().find('input').val())).toFixed(2) );
+            + validate_manual_field).toFixed(2) );
            }else{
              $(this).text("Confirmar");
              $(this).closest('td').prev().prev().find('button').attr("disabled", false);
              $(this).closest('td').prev().prev().prev().find('select').attr("disabled", false);
              article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) - 
-             parseFloat($(this).closest('td').prev().find('input').val()) ).toFixed(2);
+             validate_manual_field ).toFixed(2);
 
              //adding result to total result at the top of the page 
              $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
-             - parseFloat($(this).closest('td').prev().find('input').val())).toFixed(2) );
+             - validate_manual_field).toFixed(2));
              $(this).closest('td').prev().find('input').attr("disabled", false);
            }
           $('#article_no_found_total_points').text(article_total_points_suggestion);
