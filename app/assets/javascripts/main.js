@@ -1,6 +1,9 @@
 $(document).ready(function() {
     /*acumulate the manual pontuation for article in this variable*/
     var article_total_points_suggestion=0;
+    var summarized_total_points_suggestion=0;
+    var completed_work_total_points_suggestion=0;
+
     $(".form-group").on('click','.add-categoria', function() {
         
         formGroup = $('<div class="row form-group"><div class="col-sm-offset-2"></div></div>');
@@ -75,10 +78,31 @@ $(document).ready(function() {
                     $(this).text("Cancelar");
                     $(this).closest('td').next().next().find('button').attr("disabled", true);
                     $(this).closest('td').next().find('input').attr("disabled", true);
-                     /* how much each value worth */             
-                    article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
-                    parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+                    
 
+                     if($(this).attr("name")=="#total_article_not_found_value"){
+                      /* how much each value worth */             
+                      article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
+                      parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+
+                    } 
+
+
+                     if($(this).attr("name")=="#total_summarized_work_not_found_value"){
+                      /* how much each value worth */             
+                      summarized_total_points_suggestion = ( parseFloat(summarized_total_points_suggestion) + 
+                      parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+
+                    }
+
+                     if($(this).attr("name")=="#total_completed_work_not_found_value"){
+                      /* how much each value worth */             
+                      completed_work_total_points_suggestion = ( parseFloat(completed_work_total_points_suggestion) + 
+                      parseFloat($(this).closest('td').prev().find("option:selected").attr('value')) ).toFixed(2);
+
+                    }
+
+                     
                     //adding result to total result at the top of the page 
                     $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
                     + parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2) );
@@ -95,7 +119,20 @@ $(document).ready(function() {
                     $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
                     - parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2) );
                 }        
-               $('#article_no_found_total_points').text(article_total_points_suggestion);
+              // $('#article_no_found_total_points').text(article_total_points_suggestion);
+
+                if($(this).attr("name")=="#total_article_not_found_value"){
+                  $($(this).attr("name")).text(article_total_points_suggestion);
+                }
+
+               if($(this).attr("name")=="#total_summarized_work_not_found_value"){
+                 $($(this).attr("name")).text(summarized_total_points_suggestion);
+               }
+
+               if($(this).attr("name")=="#total_completed_work_not_found_value"){
+                 $($(this).attr("name")).text(completed_work_total_points_suggestion);
+               }
+
                }else{
                     alert("Selecione uma opção");
                }
@@ -103,7 +140,7 @@ $(document).ready(function() {
      
 
      /*manual calculation through the input field*/
-      $('.article_no_found_total_points_manual').on("click",function(){
+      $('.manual_calculation').on("click",function(){
         //get what is in the input box and put in the variable validate_manual_field
         var validate_manual_field = parseFloat($(this).closest('td').prev().find('input').val());
         //verify if this value is negative or anything but a number
@@ -115,30 +152,76 @@ $(document).ready(function() {
              $(this).closest('td').prev().prev().find('button').attr("disabled", true);
              $(this).closest('td').prev().prev().prev().find('select').attr("disabled", true);
              $(this).closest('td').prev().find('input').attr("disabled", true);
-             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
-             validate_manual_field).toFixed(2);
+
+            
+              if($(this).attr("name")=="#total_article_not_found_value"){
+                article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) + 
+                validate_manual_field).toFixed(2);
+              }
+
+              if($(this).attr("name")=="#total_summarized_work_not_found_value"){
+            
+               summarized_total_points_suggestion = ( parseFloat(summarized_total_points_suggestion) + 
+               validate_manual_field).toFixed(2);
+
+              }
+
+             if($(this).attr("name")=="#total_completed_work_not_found_value"){
+               completed_work_total_points_suggestion = ( parseFloat(completed_work_total_points_suggestion) + 
+               validate_manual_field).toFixed(2);
+              }
+
              
 
              //adding result to total result at the top of the page 
             $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
             + validate_manual_field).toFixed(2) );
+
            }else{
              $(this).text("Confirmar");
              $(this).closest('td').prev().prev().find('button').attr("disabled", false);
              $(this).closest('td').prev().prev().prev().find('select').attr("disabled", false);
-             article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) - 
-             validate_manual_field ).toFixed(2);
+             
+              if($(this).attr("name")=="#total_article_not_found_value"){
+                article_total_points_suggestion = ( parseFloat(article_total_points_suggestion) - 
+                validate_manual_field).toFixed(2);
+              }
 
+              if($(this).attr("name")=="#total_summarized_work_not_found_value"){
+            
+               summarized_total_points_suggestion = ( parseFloat(summarized_total_points_suggestion) - 
+               validate_manual_field).toFixed(2);
+
+              }
+
+             if($(this).attr("name")=="#total_completed_work_not_found_value"){
+               completed_work_total_points_suggestion = ( parseFloat(completed_work_total_points_suggestion) - 
+               validate_manual_field).toFixed(2);
+              }
              //adding result to total result at the top of the page 
              $('#candidate_total_geral').val( (parseFloat($('#candidate_total_geral').val()) 
              - validate_manual_field).toFixed(2));
              $(this).closest('td').prev().find('input').attr("disabled", false);
            }
-          $('#article_no_found_total_points').text(article_total_points_suggestion);
+
+          if($(this).attr("name")=="#total_article_not_found_value"){
+             $($(this).attr("name")).text(article_total_points_suggestion);
+          }
+
+           if($(this).attr("name")=="#total_summarized_work_not_found_value"){
+             $($(this).attr("name")).text(summarized_total_points_suggestion);
+          }
+
+           if($(this).attr("name")=="#total_completed_work_not_found_value"){
+             $($(this).attr("name")).text(completed_work_total_points_suggestion);
+          }
+
       }else{
         alert('Entre uma pontuação válida');
       }
       });
+
+
      /*Makes datepicker show only the year*/
       $(".datepicker").datepicker( {
         format: " yyyy",  //see there is extra space in format, dont remove it

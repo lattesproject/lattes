@@ -88,19 +88,19 @@
                   <td> <%= select("article", "qualis", article['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block article_no_found_total_points_suggestion " attr="">Aceitar</button>
+                     <button type="button" name = "#total_article_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>
                   </td>
                   <td align="center" >
                      <input type="text" class="form-control">
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block  article_no_found_total_points_manual" attr="">Confirmar</button>
+                     <button type="button"  name = "#total_article_not_found_value" class="btn btn-primary btn-block  manual_calculation" attr="">Confirmar</button>
                   </td>
                </tr>
                <% end %>
             </tbody>
          </table>
-         <div class="panel-footer"><strong>Total:<strong id="article_no_found_total_points">0</strong></strong></div>
+         <div class="panel-footer"><strong>Total:<strong id="total_article_not_found_value">0</strong></strong></div>
       
       </div>
    </div>
@@ -360,19 +360,19 @@
                   <td> <%= select("summarized_work", "qualis", summarized_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block article_no_found_total_points_suggestion " attr="">Aceitar</button>
+                     <button type="button" name = "#total_summarized_work_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>
                   </td>
                   <td align="center" >
                      <input type="text" class="form-control">
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block  article_no_found_total_points_manual" attr="">Confirmar</button>
+                     <button type="button" name = "#total_summarized_work_not_found_value" class="btn btn-primary btn-block  manual_calculation" attr="">Confirmar</button>
                   </td>
                </tr>
                <% end %>
             </tbody>
          </table>
-         <div class="panel-footer"><strong>Total: 0</strong></div>
+         <div class="panel-footer"><strong>Total:</strong><strong id="total_summarized_work_not_found_value"></strong></div>
 
 
       </div>
@@ -438,19 +438,19 @@
                    <td> <%= select("completed_work", "qualis", completed_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block article_no_found_total_points_suggestion " attr="">Aceitar</button>
+                     <button type="button" name="#total_completed_work_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>
                   </td>
                   <td align="center" >
                      <input type="text" class="form-control">
                   </td>
                   <td>
-                     <button type="button" class="btn btn-primary btn-block  article_no_found_total_points_manual" attr="">Confirmar</button>
+                     <button type="button" name="#total_completed_work_not_found_value"  class="btn btn-primary btn-block manual_calculation" attr="">Confirmar</button>
                   </td>
                </tr>
                <% end %>
             </tbody>
          </table>
-         <div class="panel-footer"><strong>Total: 0</strong></div>
+         <div class="panel-footer"><strong>Total:</strong><strong id="total_completed_work_not_found_value"></strong></div>
 
 
       </div>
