@@ -71,6 +71,7 @@ class CvHandler
 		article_array_not_found
 	end
 
+
 	def get_book_total_points
 		size = @books.length
 		size = @event.livros_max if size > @event.livros_max
@@ -126,6 +127,19 @@ class CvHandler
 		completed_work_in_congress_array_not_found
 	end
 
+	def get_completed_work_in_congress_not_found_2
+		completed_work_in_congress_array_not_found = Array.new
+		@completed_works.each do |completed_work|
+			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic))
+				completed_work.store("suggestions", get_suggestions(completed_work_periodic))
+				completed_work_in_congress_array_not_found.push completed_work
+			end
+		end
+		completed_work_in_congress_array_not_found
+	end
+
 	def get_summarized_work_in_congress_found
 		summarized_work_in_congress_found = Array.new
 		@summarized_works.each do |summarized_work|
@@ -137,6 +151,21 @@ class CvHandler
 			end
 		end
 		summarized_work_in_congress_found
+	end
+
+	#needs to be checked
+	def get_summarized_work_not_found
+		summarized_work_not_found = Array.new
+		@summarized_works.each do |summarized_work|
+			summarized_work_anais = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
+
+			if(!@json_qualis["periodico"].has_key?(summarized_work_anais))
+				summarized_work.store("suggestions", get_suggestions(summarized_work_anais))
+				summarized_work_not_found.push summarized_work
+			end
+				
+		end
+		summarized_work_not_found
 	end
 
 	def get_summarized_work_in_congress_total_points
@@ -290,12 +319,12 @@ def get_suggestions(article_periodic)
     @json_qualis["periodico"].each do |periodic, qualis|
       dif = levenshtein_distance(article_periodic, periodic)
       if dif < 27
-        suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif})
+        suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif , 'value'=>qualis_point(qualis)})
       end
     end
 
 
-    puts suggestions = Hash[suggestions.sort_by { |k, v| v['dif'] }[0..9]]
+    puts suggestions = Hash[suggestions.sort_by { |k, v| v['dif'] }[0..5]]
     return suggestions
 
   end

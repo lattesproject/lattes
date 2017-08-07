@@ -9,6 +9,8 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.2'
 #adding password
+#generate an database graph
+gem 'erd'
 gem 'bcrypt', '~> 3.1.7'
 #adding gem to paginate items on a page and associated bootstrap gem
 gem 'will_paginate', '3.1.5'
@@ -50,6 +52,7 @@ group :development, :test do
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+
 end
 
 group :production do
@@ -60,6 +63,9 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+
+   #generate entity relationship diagram
+  gem "rails-erd"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
