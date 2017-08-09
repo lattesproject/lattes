@@ -73,7 +73,6 @@ class CvHandler
 
 
 	def get_book_total_points
-		puts "REPEEEEEEEEEETE"
 		@books = @books.select {|book| (is_in_range?(book["DADOS_BASICOS_DO_LIVRO"]["ANO"].to_i))}
 		size = @books.length
 		size = @event.livros_max if size > @event.livros_max
