@@ -47,8 +47,8 @@ class CvHandler
 		article_array_found = Array.new
 		@articles.each do |article|
 			article_periodic = article['DETALHAMENTO_DO_ARTIGO']['TITULO_DO_PERIODICO_OU_REVISTA']
-
-			if(@json_qualis["periodico"].has_key?(article_periodic))
+			
+			if(@json_qualis["periodico"].has_key?(article_periodic) && is_in_range?(article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"].to_i))
 				article.store('qualis',@json_qualis["periodico"][article_periodic])
 				article_array_found.push article
 			end
@@ -62,7 +62,7 @@ class CvHandler
 		@articles.each do |article|
 			article_periodic = article['DETALHAMENTO_DO_ARTIGO']['TITULO_DO_PERIODICO_OU_REVISTA']
 
-			if(!@json_qualis["periodico"].has_key?(article_periodic))
+			if(!@json_qualis["periodico"].has_key?(article_periodic) && is_in_range?(article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"].to_i))
 				article.store("suggestions", get_suggestions(article_periodic))
 				article_array_not_found.push article
 			end
@@ -73,23 +73,22 @@ class CvHandler
 
 
 	def get_book_total_points
+		puts "REPEEEEEEEEEETE"
+		@books = @books.select {|book| (is_in_range?(book["DADOS_BASICOS_DO_LIVRO"]["ANO"].to_i))}
 		size = @books.length
 		size = @event.livros_max if size > @event.livros_max
 		size * @event.livros
 	end
 
 	def get_book_cap_total_points
+		@book_caps = @book_caps.select {|book_caps| (is_in_range?(book_caps["DADOS_BASICOS_DO_CAPITULO"]["ANO"].to_i))}
 		size = @book_caps.length
 		size = @event.capitulos_de_livros_max if size > @event.capitulos_de_livros_max
 		size * @event.capitulos_de_livros
 	end
 
 	def get_project_total_points
-		size = 0
-		@projects.each do |project|
-			size = size + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? 1 : @postgraduate_judgement_participation.length)
-		end
-
+		size = get_projects.length
 		size = @event.projetos_de_pesquisa_max if size > @event.projetos_de_pesquisa_max
 		size * @event.projetos_de_pesquisa
 	end
@@ -107,7 +106,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(@json_qualis["periodico"].has_key?(completed_work_periodic))
+			if(@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				completed_work.store('qualis',@json_qualis["periodico"][completed_work_periodic])
 				completed_work_in_congress_array_found.push completed_work
 			end
@@ -120,7 +119,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(completed_work_periodic))
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				completed_work_in_congress_array_not_found.push completed_work
 			end
 		end
@@ -132,7 +131,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(completed_work_periodic))
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				completed_work.store("suggestions", get_suggestions(completed_work_periodic))
 				completed_work_in_congress_array_not_found.push completed_work
 			end
@@ -145,7 +144,7 @@ class CvHandler
 		@summarized_works.each do |summarized_work|
 			summarized_work_periodic = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(@json_qualis["periodico"].has_key?(summarized_work_periodic))
+			if(@json_qualis["periodico"].has_key?(summarized_work_periodic) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				summarized_work.store('qualis',@json_qualis["periodico"][summarized_work_periodic])
 				summarized_work_in_congress_found.push summarized_work
 			end
@@ -159,7 +158,7 @@ class CvHandler
 		@summarized_works.each do |summarized_work|
 			summarized_work_anais = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(summarized_work_anais))
+			if(!@json_qualis["periodico"].has_key?(summarized_work_anais) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				summarized_work.store("suggestions", get_suggestions(summarized_work_anais))
 				summarized_work_not_found.push summarized_work
 			end
@@ -181,7 +180,7 @@ class CvHandler
 		@summarized_works.each do |summarized_work|
 			summarized_work_periodic = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(summarized_work_periodic))
+			if(!@json_qualis["periodico"].has_key?(summarized_work_periodic) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				summarized_work_in_congress_found.push summarized_work
 			end
 		end
@@ -189,12 +188,14 @@ class CvHandler
 	end
 
 	def get_doctor_judgement_participation_points
+		@doctor_judgement_participation = @doctor_judgement_participation.select {|participation| (is_in_range?(participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["ANO"].to_i))}
 		size = @doctor_judgement_participation.length
 		size = @event.bancas_doutorado_max if size > @event.bancas_doutorado_max
 		size * @event.bancas_doutorado
 	end
 
 	def get_master_judgement_participation_points
+		@master_judgement_participation = @master_judgement_participation.select {|participation| (is_in_range?(participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["ANO"].to_i))}
 		size = @master_judgement_participation.length
 		size = @event.bancas_mestrado_max if size > @event.bancas_mestrado_max
 		size * @event.bancas_mestrado
@@ -272,7 +273,7 @@ class CvHandler
 
 	def get_other_tutoring
 		return [@other_tutoring] if @other_tutoring.kind_of?(Hash)
-		@other_tutoring
+		@other_tutoring.select! {|tutoring| (is_in_range?(tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["ANO"].to_i))}
 	end
 
 	def get_projects
@@ -280,7 +281,7 @@ class CvHandler
 		@projects.each do |project|
 			projects_obtained = projects_obtained + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? [project["PROJETO_DE_PESQUISA"]] : project["PROJETO_DE_PESQUISA"])
 		end
-		projects_obtained
+		projects_obtained.select! {|project| (project["SITUACAO"] == "CONCLUIDO" && is_in_range?(project["ANO_FIM"].to_i))}
 	end
 
 	def get_name
@@ -323,7 +324,6 @@ def get_suggestions(article_periodic)
       end
     end
 
-
     puts suggestions = Hash[suggestions.sort_by { |k, v| v['dif'] }[0..5]]
     return suggestions
 
@@ -351,6 +351,10 @@ def get_suggestions(article_periodic)
       end
     end
     d[m][n]
+  end
+  
+  def is_in_range?(year)
+	 (year > @event.start_year && year < @event.end_year)
   end
 
 end
