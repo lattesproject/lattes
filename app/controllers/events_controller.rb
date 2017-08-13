@@ -1,10 +1,12 @@
 class EventsController < ApplicationController 
-	before_action :set_event, only: [:edit, :update, :show, :destroy]
+	before_action :set_event, only: [:edit, :update, :show, :destroy, :json]
 	before_action :require_user
 	before_action :require_same_user, only: [:edit, :update, :destroy]
 	before_action :require_admin, only: [:index]
 	
-
+	def json
+		render json: @event;
+	end
 
 	def index
 		@events = Event.paginate(page: params[:page], per_page: 5)

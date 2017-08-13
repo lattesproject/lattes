@@ -1,6 +1,9 @@
 require "json"
 require 'active_support/all'
 require 'nokogiri'
+require 'symspell'
+
+
 
 class CvHandler
 		
@@ -24,6 +27,7 @@ class CvHandler
 		@master_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO'] || [] rescue []
 		@doctor_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO'] || [] rescue []
 		@other_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['OUTRAS_ORIENTACOES_CONCLUIDAS'] || [] rescue []
+	
 	end
 
 	def get_file_periodico
@@ -63,7 +67,6 @@ class CvHandler
 			article_periodic = article['DETALHAMENTO_DO_ARTIGO']['TITULO_DO_PERIODICO_OU_REVISTA']
 
 			if(!@json_qualis["periodico"].has_key?(article_periodic) && is_in_range?(article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"].to_i))
-				article.store("suggestions", get_suggestions(article_periodic))
 				article_array_not_found.push article
 			end
 				
@@ -131,7 +134,6 @@ class CvHandler
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
 			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i)  || [] rescue []) 
-				completed_work.store("suggestions", get_suggestions(completed_work_periodic))
 				completed_work_in_congress_array_not_found.push completed_work
 			end
 		end
@@ -143,7 +145,7 @@ class CvHandler
 		@summarized_works.each do |summarized_work|
 			summarized_work_periodic = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(@json_qualis["periodico"].has_key?(summarized_work_periodic) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i) || [] rescue [])  
+			if(@json_qualis["periodico"].has_key?(summarized_work_periodic) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))
 				summarized_work.store('qualis',@json_qualis["periodico"][summarized_work_periodic])
 				summarized_work_in_congress_found.push summarized_work
 			end
@@ -158,7 +160,6 @@ class CvHandler
 			summarized_work_anais = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
 			if(!@json_qualis["periodico"].has_key?(summarized_work_anais) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i) || [] rescue [])  
-				summarized_work.store("suggestions", get_suggestions(summarized_work_anais))
 				summarized_work_not_found.push summarized_work
 			end
 				
@@ -313,12 +314,13 @@ class CvHandler
 	end
 
 
+
 def get_suggestions(article_periodic)
     suggestions = Hash.new
     #puts "artigo => #{article_periodic}"
     @json_qualis["periodico"].each do |periodic, qualis|
       dif = levenshtein_distance(article_periodic, periodic)
-      if dif < 27
+      if dif < 15
         suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif , 'value'=>qualis_point(qualis)})
       end
     end
@@ -328,7 +330,21 @@ def get_suggestions(article_periodic)
 
   end
 
- def levenshtein_distance(s, t)
+
+ def levenshtein_distance(a, b)
+    a, b = a.downcase, b.downcase
+    costs = Array(0..b.length) # i == 0
+    (1..a.length).each do |i|
+      costs[0], nw = i, i - 1  # j == 0; nw is lev(i-1, j)
+      (1..b.length).each do |j|
+        costs[j], nw = [costs[j] + 1, costs[j-1] + 1, a[i-1] == b[j-1] ? nw : nw + 1].min, costs[j]
+      end
+    end
+    costs[b.length]
+  end
+
+
+ def levenshtein_distance2(s, t)
     m = s.length
     n = t.length
     return m if n == 0

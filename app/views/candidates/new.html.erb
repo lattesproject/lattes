@@ -18,7 +18,7 @@
 <%= f.hidden_field :projetos_de_pesquisa_total, :value => @cv_handler.get_project_total_points %>
 <%= f.hidden_field :bancas_total, :value => @cv_handler.get_graduation_judgement_participation_points + @cv_handler.get_postgraduate_judgement_participation_points + @cv_handler.get_master_judgement_participation_points + @cv_handler.get_doctor_judgement_participation_points %>
 <%= f.hidden_field :orientacoes_total, :value => @cv_handler.get_other_tutoring_points + @cv_handler.get_master_tutoring_points + @cv_handler.get_doctor_tutoring_points %>
-<%= f.hidden_field :event_id, :value => @event.id %>
+<%= f.hidden_field :event_id, :value => @event.id, :id => "hidden_event_id" %>
 <% end %>
 <br>
 <ul class="nav candidate-tabs nav-tabs">
@@ -61,8 +61,7 @@
       <div class="panel panel-default">
          <div class="panel-heading text-center">
             <h4><strong>Artigos Não Identificados</strong></h4></div>
-
-
+            <button type="button"  id="load_suggestion" class="btn btn-primary btn-block" attr="">Carregar Sugestões</button>
 
              <table class="table table-bordered" >
 
@@ -82,10 +81,13 @@
                <% @cv_handler.get_articles_not_found.each do |article| %>
                <tr>
                   <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["TITULO_DO_ARTIGO"] %></td>
-                  <td><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
+                  <td class="article_title"><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
                   <td align="center"><%= article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"] %></td>
                   <td align="center"></td>
-                  <td> <%= select("article", "qualis", article['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
+                  <td> 
+                       <select class="form-control" id="sel1">
+                         <option>Sugestão</option>
+                       </select>
                   </td>
                   <td>
                      <button type="button" name = "#total_article_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>
@@ -357,7 +359,10 @@
                   <td><%= summarized_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
                   <td></td>
-                  <td> <%= select("summarized_work", "qualis", summarized_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
+                  <td> 
+                     <select class="form-control" id="sel1">
+                         <option>Sugestão</option>
+                     </select>
                   </td>
                   <td>
                      <button type="button" name = "#total_summarized_work_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>
@@ -435,7 +440,10 @@
                   <td><%= completed_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
                   <td></td>
-                   <td> <%= select("completed_work", "qualis", completed_work['suggestions'].each{|key, value| [key,value['qualis']]}, {include_blank: 'Sugestão', value: '0'}, {class:"form-control select_qualis", attr: ""}) %>
+                   <td>
+                     <select class="form-control" id="sel1">
+                         <option>Sugestão</option>
+                       </select>
                   </td>
                   <td>
                      <button type="button" name="#total_completed_work_not_found_value" class="btn btn-primary btn-block article_no_found_total_points_suggestion" attr="">Aceitar</button>

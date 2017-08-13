@@ -10,6 +10,5 @@ Rails.application.routes.draw do
   get 'candidates', to: 'candidates#index'
   post 'candidates/new', to: 'candidates#new'
   resources :candidates, except: [:new]
-
-
+  get 'events/:id/json', to: 'events#json'
 end
