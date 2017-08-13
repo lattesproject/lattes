@@ -285,6 +285,7 @@ $(document).ready(function() {
     function loadPeriodicJson(){
         $.getJSON('/periodico.json', function(data) {
             periodic_json = data; 
+            //console.log(periodic_json);
         });
     }
 
@@ -295,28 +296,35 @@ $(document).ready(function() {
       //get all td's with this class and iterate through them
       $(".article_title").each(function() {
          $td_value = $(this);
-         //console.log( $td_value);
           suggestions = new Array();
         //compare each entrance to each value inside of the json file
-          Object.keys(periodic_json.periodico).forEach(function(key){
+          Object.keys(periodic_json.periodico).forEach(function(key,value){
                        levenshtein_distance = levenshtein(key, $td_value.context.textContent);
-                       console.log(key + " & " + $td_value.context.textContent);
+                       //console.log(key + " & " + $td_value.context.textContent);
                        //console.log(levenshtein_distance);
                        if(levenshtein_distance<27){
                          var articles_hash = {};
-                          //articles_hash[key] = levenshtein_distance;
                           articles_hash['dif'] = levenshtein_distance;
                           articles_hash['periodic'] = key;
+                          articles_hash['qualis'] = periodic_json['periodico'][key];
                           suggestions.push(articles_hash);
                        }
           });
-
+          //find the select object in each line
           $select = $(this).closest('td').next().next().next().find("select");
-          //console.log(suggestions);
           var $option;
+          
+          //this will sort the object array by the dif number
+          suggestions.sort(function(a, b) {
+              return parseFloat(a.dif) - parseFloat(b.dif);
+          });
+
+          //limit the number of suggestions to 10
+          if(suggestions.length>10)
+          suggestions.length = 10;
 
           suggestions.forEach(function(val) {
-              $option = $('<option value="' + val.dif + '">' + val.periodic + '</option>');
+              $option = $('<option value="' + val.dif + '" qualis="' + val.qualis + '">' + val.periodic + '</option>');
                 
                     $option.attr('selected', 'selected');
                 
