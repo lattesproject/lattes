@@ -55,6 +55,7 @@ $(document).ready(function() {
     var summarized_total_points_suggestion = 0;
     var completed_work_total_points_suggestion = 0;
     var event_json;
+    get_event_json($('#hidden_event_id').val());
     var periodic_json = loadPeriodicJson();
 
     $(".form-group").on('click', '.add-categoria', function() {
@@ -294,24 +295,21 @@ $(document).ready(function() {
     
     
     $("#load_suggestion").on('click', function() {
-      event_json = get_event_json($('#hidden_event_id').val());
-      //console.log(event_json);
+      console.log(event_json);
       //get all td's with this class and iterate through them
       $(".article_title").each(function() {
          $td_value = $(this);
           suggestions = new Array();
-          console.log(event_json);
         //compare each entrance to each value inside of the json file
           Object.keys(periodic_json.periodico).forEach(function(key,value){
 
                        levenshtein_distance = levenshtein(key, $td_value.context.textContent);
-                       //console.log(key + " & " + $td_value.context.textContent);
-                       //console.log(levenshtein_distance);
                        if(levenshtein_distance<27){
                          var articles_hash = {};
                           articles_hash['dif'] = levenshtein_distance;
                           articles_hash['periodic'] = key;
                           articles_hash['qualis'] = periodic_json['periodico'][key];
+                          articles_hash['value'] =  qualis_point(periodic_json['periodico'][key], "artigos");
                           suggestions.push(articles_hash);
                        }
           });
@@ -332,7 +330,7 @@ $(document).ready(function() {
           $select.empty();
           $select.prepend("<option  selected='selected'>Sugestão</option>");
           suggestions.forEach(function(val) {
-              $option = $('<option qualis="' + val.qualis + '" + value="' + 0 + '" dif="' + val.dif + '" >' + val.periodic + '</option>');
+              $option = $('<option qualis="' + val.qualis + '" + value="' + val.value + '" dif="' + val.dif + '" >' + val.periodic + '</option>');
                       
                      //just if you want to make this option selected by default
                     //$option.attr('selected', 'selected');
@@ -355,10 +353,15 @@ $(document).ready(function() {
           dataType: "json",
           success: function(data) {
               event_json = data;
-              console.log(event_json);
           }
       });
   }
 
+
+
+  function qualis_point(qualis, entity){
+    var string_qualis_entity = entity + "_qualis_" + qualis.toLowerCase();
+    return event_json[string_qualis_entity];
+  }
 
 });
