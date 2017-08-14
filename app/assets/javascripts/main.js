@@ -292,25 +292,42 @@ $(document).ready(function() {
     }
 
    
-    
-    
-    $("#load_suggestion").on('click', function() {
-      console.log(event_json);
+    $(".article_load_suggestion").on('click', function() {
+      //console.log(event_json);
       //get all td's with this class and iterate through them
-      $(".article_title").each(function() {
+      load_sugestions("artigos","articles_dynamic_calculation");
+    });
+
+     $(".summarized_word_load_suggestion").on('click', function() {
+      //console.log(event_json);
+      //get all td's with this class and iterate through them
+      load_sugestions("resumos_em_anais_de_congresso", "summarized_work_dynamic_calculation");
+    });
+
+      $(".completed_work_load_suggestion").on('click', function() {
+      //console.log(event_json);
+      //get all td's with this class and iterate through them
+      load_sugestions("trabalhos_completos_em_anais_de_congresso", "completed_work_dynamic_calculation");
+    });
+
+
+
+    function load_sugestions(entity_name,entity_class){
+
+          $("." + entity_class).each(function() {
          $td_value = $(this);
           suggestions = new Array();
         //compare each entrance to each value inside of the json file
-          Object.keys(periodic_json.periodico).forEach(function(key,value){
+          Object.keys(periodic_json.periodico).forEach(function(key){
 
                        levenshtein_distance = levenshtein(key, $td_value.context.textContent);
                        if(levenshtein_distance<27){
-                         var articles_hash = {};
-                          articles_hash['dif'] = levenshtein_distance;
-                          articles_hash['periodic'] = key;
-                          articles_hash['qualis'] = periodic_json['periodico'][key];
-                          articles_hash['value'] =  qualis_point(periodic_json['periodico'][key], "artigos");
-                          suggestions.push(articles_hash);
+                         var entity_hash = {};
+                          entity_hash['dif'] = levenshtein_distance;
+                          entity_hash['periodic'] = key;
+                          entity_hash['qualis'] = periodic_json['periodico'][key];
+                          entity_hash['value'] =  qualis_point(periodic_json['periodico'][key], entity_name);
+                          suggestions.push(entity_hash);
                        }
           });
           //find the select object in each line
@@ -334,13 +351,13 @@ $(document).ready(function() {
                       
                      //just if you want to make this option selected by default
                     //$option.attr('selected', 'selected');
-                
-
                 $select.append($option);
           });
 
       });
-    });
+
+
+    }
 
     
 
@@ -353,6 +370,7 @@ $(document).ready(function() {
           dataType: "json",
           success: function(data) {
               event_json = data;
+              console.log(event_json);
           }
       });
   }

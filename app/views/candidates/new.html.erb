@@ -61,7 +61,7 @@
       <div class="panel panel-default">
          <div class="panel-heading text-center">
             <h4><strong>Artigos Não Identificados</strong></h4></div>
-            <button type="button"  id="load_suggestion" class="btn btn-primary btn-block" attr="">Carregar Sugestões</button>
+            <button type="button" class="btn btn-primary btn-block article_load_suggestion" attr="">Carregar Sugestões</button>
 
              <table class="table table-bordered" >
 
@@ -81,7 +81,7 @@
                <% @cv_handler.get_articles_not_found.each do |article| %>
                <tr>
                   <td><%= article["DADOS_BASICOS_DO_ARTIGO"]["TITULO_DO_ARTIGO"] %></td>
-                  <td class="article_title"><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
+                  <td class="articles_dynamic_calculation"><%= article["DETALHAMENTO_DO_ARTIGO"]["TITULO_DO_PERIODICO_OU_REVISTA"] %></td>
                   <td align="center"><%= article["DADOS_BASICOS_DO_ARTIGO"]["ANO_DO_ARTIGO"] %></td>
                   <td align="center"></td>
                   <td> 
@@ -337,6 +337,7 @@
        <div class="panel panel-default">
          <div class="panel-heading text-center">
             <h4><strong>Resumo em Anais de Congresso (Não Identificados)</strong></h4>
+            <button type="button" class="btn btn-primary btn-block summarized_word_load_suggestion" attr="">Carregar Sugestões</button>
         </div>
          
              <table class="table table-bordered" >
@@ -356,11 +357,11 @@
                <% @cv_handler.get_summarized_work_not_found.each do |summarized_work| %>
                <tr>
                   <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["TITULO_DO_TRABALHO"] %></td>
-                  <td><%= summarized_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
+                  <td class="summarized_work_dynamic_calculation"><%= summarized_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
                   <td></td>
                   <td> 
-                     <select class="form-control" id="sel1">
+                     <select class="form-control select_qualis" id="sel1">
                          <option>Sugestão</option>
                      </select>
                   </td>
@@ -418,6 +419,7 @@
        <div class="panel panel-default">
          <div class="panel-heading text-center">
             <h4><strong>Trabalho Completo em Anais de Congresso (Não Identificados)</strong></h4>
+            <button type="button" class="btn btn-primary btn-block completed_work_load_suggestion" attr="">Carregar Sugestões</button>
         </div>
          
              <table class="table table-bordered" >
@@ -437,11 +439,11 @@
                <% @cv_handler.get_completed_work_in_congress_not_found_2.each do |completed_work| %>
                <tr>
                   <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["TITULO_DO_TRABALHO"] %></td>
-                  <td><%= completed_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
+                  <td class="completed_work_dynamic_calculation"><%= completed_work['DETALHAMENTO_DO_TRABALHO']["TITULO_DOS_ANAIS_OU_PROCEEDINGS"] %></td>
                   <td><%= completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"] %></td>
                   <td></td>
                    <td>
-                     <select class="form-control" id="sel1">
+                     <select class="form-control select" id="sel1">
                          <option>Sugestão</option>
                        </select>
                   </td>
