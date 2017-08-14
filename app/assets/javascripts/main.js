@@ -54,6 +54,7 @@ $(document).ready(function() {
     var article_total_points_suggestion = 0;
     var summarized_total_points_suggestion = 0;
     var completed_work_total_points_suggestion = 0;
+    var event_json;
     var periodic_json = loadPeriodicJson();
 
     $(".form-group").on('click', '.add-categoria', function() {
@@ -293,12 +294,16 @@ $(document).ready(function() {
     
     
     $("#load_suggestion").on('click', function() {
+      event_json = get_event_json($('#hidden_event_id').val());
+      //console.log(event_json);
       //get all td's with this class and iterate through them
       $(".article_title").each(function() {
          $td_value = $(this);
           suggestions = new Array();
+          console.log(event_json);
         //compare each entrance to each value inside of the json file
           Object.keys(periodic_json.periodico).forEach(function(key,value){
+
                        levenshtein_distance = levenshtein(key, $td_value.context.textContent);
                        //console.log(key + " & " + $td_value.context.textContent);
                        //console.log(levenshtein_distance);
@@ -323,11 +328,16 @@ $(document).ready(function() {
           if(suggestions.length>10)
           suggestions.length = 10;
 
+          //clear the selec box
+          $select.empty();
+          $select.prepend("<option  selected='selected'>Sugestão</option>");
           suggestions.forEach(function(val) {
-              $option = $('<option value="' + val.dif + '" qualis="' + val.qualis + '">' + val.periodic + '</option>');
+              $option = $('<option qualis="' + val.qualis + '" + value="' + 0 + '" dif="' + val.dif + '" >' + val.periodic + '</option>');
+                      
+                     //just if you want to make this option selected by default
+                    //$option.attr('selected', 'selected');
                 
-                    $option.attr('selected', 'selected');
-                
+
                 $select.append($option);
           });
 
@@ -338,14 +348,17 @@ $(document).ready(function() {
 
     //event id number
     //var event_id_number = $('#hidden_event_id').val();
-/*
-    $.ajax({
-        type: "GET",
-        url: "/events/" + event_id_number + "/json",
-        dataType: "json",
-        success: function(data) {
-            alert(data.name) // Will alert Max
-        }
-    });*/
+  function get_event_json(event_id_number){
+      $.ajax({
+          type: "GET",
+          url: "/events/" + event_id_number + "/json",
+          dataType: "json",
+          success: function(data) {
+              event_json = data;
+              console.log(event_json);
+          }
+      });
+  }
+
 
 });
