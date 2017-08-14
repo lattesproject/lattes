@@ -162,12 +162,35 @@ $(document).ready(function() {
                     parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2));
 
             } else {
+
+              if ($(this).attr("name") == "#total_article_not_found_value") {
                 $(this).text("Aceitar");
                 $(this).closest('td').prev().find('select').attr("disabled", false);
                 $(this).closest('td').next().next().find('button').attr("disabled", false);
                 $(this).closest('td').next().find('input').attr("disabled", false);
                 article_total_points_suggestion = (parseFloat(article_total_points_suggestion) -
                     parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2);
+              }
+
+              if ($(this).attr("name") == "#total_summarized_work_not_found_value") {
+                $(this).text("Aceitar");
+                $(this).closest('td').prev().find('select').attr("disabled", false);
+                $(this).closest('td').next().next().find('button').attr("disabled", false);
+                $(this).closest('td').next().find('input').attr("disabled", false);
+                summarized_total_points_suggestion = (parseFloat(summarized_total_points_suggestion) -
+                    parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2);
+
+              }
+
+              if ($(this).attr("name") == "#total_completed_work_not_found_value") {
+                $(this).text("Aceitar");
+                $(this).closest('td').prev().find('select').attr("disabled", false);
+                $(this).closest('td').next().next().find('button').attr("disabled", false);
+                $(this).closest('td').next().find('input').attr("disabled", false);
+                completed_work_total_points_suggestion = (parseFloat(completed_work_total_points_suggestion) -
+                    parseFloat($(this).closest('td').prev().find("option:selected").attr('value'))).toFixed(2);
+
+              }
 
                 //adding result to total result at the top of the page 
                 $('#candidate_total_geral').val((parseFloat($('#candidate_total_geral').val()) -
