@@ -3,8 +3,6 @@ require 'active_support/all'
 require 'nokogiri'
 require 'symspell'
 
-
-
 class CvHandler
 		
 	def initialize(xml,event)
@@ -27,7 +25,6 @@ class CvHandler
 		@master_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_MESTRADO'] || [] rescue []
 		@doctor_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO'] || [] rescue []
 		@other_tutoring = @json_cv['OUTRA_PRODUCAO']['ORIENTACOES_CONCLUIDAS']['OUTRAS_ORIENTACOES_CONCLUIDAS'] || [] rescue []
-	
 	end
 
 	def get_file_periodico
@@ -74,17 +71,14 @@ class CvHandler
 		article_array_not_found
 	end
 
-
 	def get_book_total_points
-		@books = @books.select {|book| (is_in_range?(book["DADOS_BASICOS_DO_LIVRO"]["ANO"].to_i))}  || [] rescue []
-		size = @books.length
+		size = get_books.length
 		size = @event.livros_max if size > @event.livros_max
 		size * @event.livros
 	end
 
 	def get_book_cap_total_points
-		@book_caps = @book_caps.select {|book_caps| (is_in_range?(book_caps["DADOS_BASICOS_DO_CAPITULO"]["ANO"].to_i))}  || [] rescue []
-		size = @book_caps.length
+		size = get_book_caps.length
 		size = @event.capitulos_de_livros_max if size > @event.capitulos_de_livros_max
 		size * @event.capitulos_de_livros
 	end
@@ -108,7 +102,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i) || [] rescue [])  
+			if(@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))  
 				completed_work.store('qualis',@json_qualis["periodico"][completed_work_periodic])
 				completed_work_in_congress_array_found.push completed_work
 			end
@@ -121,7 +115,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i) || [] rescue [])  
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))  
 				completed_work_in_congress_array_not_found.push completed_work
 			end
 		end
@@ -133,7 +127,7 @@ class CvHandler
 		@completed_works.each do |completed_work|
 			completed_work_periodic = completed_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i)  || [] rescue []) 
+			if(!@json_qualis["periodico"].has_key?(completed_work_periodic) && is_in_range?(completed_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i)) 
 				completed_work_in_congress_array_not_found.push completed_work
 			end
 		end
@@ -159,7 +153,7 @@ class CvHandler
 		@summarized_works.each do |summarized_work|
 			summarized_work_anais = summarized_work['DETALHAMENTO_DO_TRABALHO']['TITULO_DOS_ANAIS_OU_PROCEEDINGS']
 
-			if(!@json_qualis["periodico"].has_key?(summarized_work_anais) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i) || [] rescue [])  
+			if(!@json_qualis["periodico"].has_key?(summarized_work_anais) && is_in_range?(summarized_work['DADOS_BASICOS_DO_TRABALHO']["ANO_DO_TRABALHO"].to_i))  
 				summarized_work_not_found.push summarized_work
 			end
 				
@@ -188,92 +182,90 @@ class CvHandler
 	end
 
 	def get_doctor_judgement_participation_points
-		@doctor_judgement_participation = @doctor_judgement_participation.select {|participation| (is_in_range?(participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["ANO"].to_i))}  || [] rescue []
-		size = @doctor_judgement_participation.length
+		size = get_doctor_judgement_participation.length
 		size = @event.bancas_doutorado_max if size > @event.bancas_doutorado_max
 		size * @event.bancas_doutorado
 	end
 
 	def get_master_judgement_participation_points
-		@master_judgement_participation = @master_judgement_participation.select {|participation| (is_in_range?(participation["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["ANO"].to_i))}  || [] rescue []
-		size = @master_judgement_participation.length
+		size = get_master_judgement_participation.length
 		size = @event.bancas_mestrado_max if size > @event.bancas_mestrado_max
 		size * @event.bancas_mestrado
 	end
 
 	def get_postgraduate_judgement_participation_points
-		size = @postgraduate_judgement_participation.kind_of?(Hash) ? 1 : @postgraduate_judgement_participation.length
+		size = get_postgraduate_judgement_participation.length
 		size = @event.bancas_especializacao_max if size > @event.bancas_especializacao_max
 		size * @event.bancas_especializacao
 	end
 
 	def get_graduation_judgement_participation_points
-		size = @graduation_judgement_participation.length
+		size = get_graduation_judgement_participation.length
 		size = @event.bancas_graduacao_max if size > @event.bancas_graduacao_max
 		size * @event.bancas_graduacao
 	end
 
 	def get_doctor_tutoring_points
-		size = @doctor_tutoring.length
+		size = get_doctor_tutoring.length
 		size = @event.orientacoes_doutorado_max if size > @event.orientacoes_doutorado_max
 		size * @event.orientacoes_doutorado
 	end
 
 	def get_master_tutoring_points
-		size = @master_tutoring.length
+		size = get_master_tutoring.length
 		size = @event.orientacoes_mestrado_max if size > @event.orientacoes_mestrado_max
 		size * @event.orientacoes_mestrado
 	end
 
 	def get_other_tutoring_points
-		size = @other_tutoring.length
+		size = get_other_tutoring.length
 		size = @event.orientacoes_outras_max if size > @event.orientacoes_outras_max
 		size * @event.orientacoes_outras
 	end
 
 	def get_books
-		return [@books] if @books.kind_of?(Hash)
-		@books
+		@books = [@books] if @books.kind_of?(Hash)
+		@books = @books.select {|book| (is_in_range?(book["DADOS_BASICOS_DO_LIVRO"]["ANO"].to_i))} || []
 	end
 
 	def get_book_caps
-		return [@book_caps] if @book_caps.kind_of?(Hash)
-		@book_caps
+		@book_caps = [@book_caps] if @book_caps.kind_of?(Hash)
+		@book_caps = @book_caps.select {|book_caps| (is_in_range?(book_caps["DADOS_BASICOS_DO_CAPITULO"]["ANO"].to_i))} || []
 	end
 
 	def get_doctor_judgement_participation
-		return [@doctor_judgement_participation] if @doctor_judgement_participation.kind_of?(Hash)
-		@doctor_judgement_participation
+		@doctor_judgement_participation = [@doctor_judgement_participation] if @doctor_judgement_participation.kind_of?(Hash)
+		@doctor_judgement_participation = @doctor_judgement_participation.select {|judgement| (is_in_range?(judgement["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_DOUTORADO"]["ANO"].to_i))} || []
 	end
 
 	def get_master_judgement_participation
-		return [@master_judgement_participation] if @master_judgement_participation.kind_of?(Hash)
-		@master_judgement_participation
+		@master_judgement_participation = [@master_judgement_participation] if @master_judgement_participation.kind_of?(Hash)
+		@master_judgement_participation = @master_judgement_participation.select {|judgement| (is_in_range?(judgement["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_MESTRADO"]["ANO"].to_i))} || []
 	end
 
 	def get_postgraduate_judgement_participation
-		return [@postgraduate_judgement_participation] if @postgraduate_judgement_participation.kind_of?(Hash)
-		@postgraduate_judgement_participation
+		@postgraduate_judgement_participation = [@postgraduate_judgement_participation] if @postgraduate_judgement_participation.kind_of?(Hash)
+		@postgraduate_judgement_participation = @postgraduate_judgement_participation.select {|judgement| (is_in_range?(judgement["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_APERFEICOAMENTO_ESPECIALIZACAO"]["ANO"].to_i))} || []
 	end
 
 	def get_graduation_judgement_participation
-		return [@graduation_judgement_participation] if @graduation_judgement_participation.kind_of?(Hash)
-		@graduation_judgement_participation
+		@graduation_judgement_participation = [@graduation_judgement_participation] if @graduation_judgement_participation.kind_of?(Hash)
+		@graduation_judgement_participation = @graduation_judgement_participation.select {|judgement| (is_in_range?(judgement["DADOS_BASICOS_DA_PARTICIPACAO_EM_BANCA_DE_GRADUACAO"]["ANO"].to_i))} || []
 	end
 
 	def get_doctor_tutoring
-		return [@doctor_tutoring] if @doctor_tutoring.kind_of?(Hash)
-		@doctor_tutoring
+		@doctor_tutoring = [@doctor_tutoring] if @doctor_tutoring.kind_of?(Hash)
+		@doctor_tutoring = @doctor_tutoring.select {|tutoring| (is_in_range?(tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_DOUTORADO"]["ANO"].to_i))} || []
 	end
 
 	def get_master_tutoring
-		return [@master_tutoring] if @master_tutoring.kind_of?(Hash)
-		@master_tutoring
+		@master_tutoring = [@master_tutoring] if @master_tutoring.kind_of?(Hash)
+		@master_tutoring = @master_tutoring.select {|tutoring| (is_in_range?(tutoring["DADOS_BASICOS_DE_ORIENTACOES_CONCLUIDAS_PARA_MESTRADO"]["ANO"].to_i))} || []
 	end
 
 	def get_other_tutoring
-		return [@other_tutoring] if @other_tutoring.kind_of?(Hash)
-		@other_tutoring.select! {|tutoring| (is_in_range?(tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["ANO"].to_i))}  || [] rescue []
+		@other_tutoring = [@other_tutoring] if @other_tutoring.kind_of?(Hash)
+		@other_tutoring = @other_tutoring.select {|tutoring| (is_in_range?(tutoring["DADOS_BASICOS_DE_OUTRAS_ORIENTACOES_CONCLUIDAS"]["ANO"].to_i))} || []
 	end
 
 	def get_projects
@@ -281,7 +273,7 @@ class CvHandler
 		@projects.each do |project|
 			projects_obtained = projects_obtained + (project["PROJETO_DE_PESQUISA"].kind_of?(Hash) ? [project["PROJETO_DE_PESQUISA"]] : project["PROJETO_DE_PESQUISA"])
 		end
-		projects_obtained.select! {|project| (project["SITUACAO"] == "CONCLUIDO" && is_in_range?(project["ANO_FIM"].to_i))} || [] rescue []
+		projects_obtained = projects_obtained.select {|project| (project["SITUACAO"] == "CONCLUIDO" && is_in_range?(project["ANO_FIM"].to_i))} || []
 	end
 
 	def get_name
@@ -312,61 +304,6 @@ class CvHandler
 			return @event.artigos_qualis_c
 		end
 	end
-
-
-
-def get_suggestions(article_periodic)
-    suggestions = Hash.new
-    #puts "artigo => #{article_periodic}"
-    @json_qualis["periodico"].each do |periodic, qualis|
-      dif = levenshtein_distance(article_periodic, periodic)
-      if dif < 15
-        suggestions.store(periodic,{'qualis'=>qualis, 'dif'=> dif , 'value'=>qualis_point(qualis)})
-      end
-    end
-
-    puts suggestions = Hash[suggestions.sort_by { |k, v| v['dif'] }[0..5]]
-    return suggestions
-
-  end
-
-
- def levenshtein_distance(a, b)
-    a, b = a.downcase, b.downcase
-    costs = Array(0..b.length) # i == 0
-    (1..a.length).each do |i|
-      costs[0], nw = i, i - 1  # j == 0; nw is lev(i-1, j)
-      (1..b.length).each do |j|
-        costs[j], nw = [costs[j] + 1, costs[j-1] + 1, a[i-1] == b[j-1] ? nw : nw + 1].min, costs[j]
-      end
-    end
-    costs[b.length]
-  end
-
-
- def levenshtein_distance2(s, t)
-    m = s.length
-    n = t.length
-    return m if n == 0
-    return n if m == 0
-    d = Array.new(m+1) {Array.new(n+1)}
-
-    (0..m).each {|i| d[i][0] = i}
-    (0..n).each {|j| d[0][j] = j}
-    (1..n).each do |j|
-      (1..m).each do |i|
-      d[i][j] = if s[i-1] == t[j-1]  # adjust index into string
-            d[i-1][j-1]       # no operation required
-            else
-            [ d[i-1][j]+1,    # deletion
-              d[i][j-1]+1,    # insertion
-              d[i-1][j-1]+1,  # substitution
-            ].min
-            end
-      end
-    end
-    d[m][n]
-  end
   
   def is_in_range?(year)
 	 (year > @event.start_year && year < @event.end_year)
