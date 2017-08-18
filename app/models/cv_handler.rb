@@ -39,7 +39,7 @@ class CvHandler
 	def get_articles_found_total_points
 		found_article_total_points = 0
 		get_articles_found.each do |article|
-			found_article_total_points = found_article_total_points + qualis_point(article['qualis'])
+			found_article_total_points = found_article_total_points + qualis_point_articles(article['qualis'])
 		end
 		found_article_total_points
 	end
@@ -92,7 +92,7 @@ class CvHandler
 	def get_completed_work_in_congress_total_points
 		found_completed_work_total_points = 0
 		get_completed_work_in_congress_found.each do |completed_work|
-			found_completed_work_total_points = found_completed_work_total_points + qualis_point(completed_work['qualis'])
+			found_completed_work_total_points = found_completed_work_total_points + qualis_point_completed_work(completed_work['qualis'])
 		end
 		found_completed_work_total_points
 	end
@@ -164,7 +164,7 @@ class CvHandler
 	def get_summarized_work_in_congress_total_points
 		summarized_work_in_congress_total_points = 0
 		get_summarized_work_in_congress_found.each do |summarized_work|
-			summarized_work_in_congress_total_points = summarized_work_in_congress_total_points + qualis_point(summarized_work['qualis']) 
+			summarized_work_in_congress_total_points = summarized_work_in_congress_total_points + qualis_point_summarized_work(summarized_work['qualis']) 
 		end
 		summarized_work_in_congress_total_points
 	end
@@ -284,7 +284,7 @@ class CvHandler
 		get_articles_found_total_points + get_book_total_points + get_book_cap_total_points + get_project_total_points + get_doctor_judgement_participation_points + get_master_judgement_participation_points + get_postgraduate_judgement_participation_points + get_graduation_judgement_participation_points + get_doctor_tutoring_points + get_master_tutoring_points + get_other_tutoring_points
 	end
 
-	def qualis_point(qualis)
+	def qualis_point_articles(qualis)
 		case qualis
 		when 'A1'
 			return @event.artigos_qualis_a1
@@ -302,6 +302,48 @@ class CvHandler
 			return @event.artigos_qualis_b5
 		when 'C'
 			return @event.artigos_qualis_c
+		end
+	end
+
+	def qualis_point_summarized_work(qualis)
+		case qualis
+		when 'A1'
+			return @event.resumos_em_anais_de_congresso_qualis_a1
+		when 'A2'
+			return @event.resumos_em_anais_de_congresso_qualis_a2
+		when 'B1'
+			return @event.resumos_em_anais_de_congresso_qualis_b1
+		when 'B2'
+			return @event.resumos_em_anais_de_congresso_qualis_b2
+		when 'B3'
+			return @event.resumos_em_anais_de_congresso_qualis_b3
+		when 'B4'
+			return @event.resumos_em_anais_de_congresso_qualis_b4
+		when 'B5'
+			return @event.resumos_em_anais_de_congresso_qualis_b5
+		when 'C'
+			return @event.resumos_em_anais_de_congresso_qualis_c
+		end
+	end
+
+	def qualis_point_completed_work(qualis)
+		case qualis
+		when 'A1'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_a1
+		when 'A2'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_a2
+		when 'B1'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_b1
+		when 'B2'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_b2
+		when 'B3'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_b3
+		when 'B4'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_b4
+		when 'B5'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_b5
+		when 'C'
+			return @event.trabalhos_completos_em_anais_de_congresso_qualis_c
 		end
 	end
   
