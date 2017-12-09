@@ -37,7 +37,7 @@ set :deploy_to, '/home/deploy/projetolattes'
 
 set :linked_files, %w{config/database.yml config/secrets.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :rvm_map_bins, %w{gem rake ruby rails bundle}
+set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(your command))
 
 
 namespace :deploy do
