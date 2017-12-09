@@ -60,7 +60,9 @@ group :development, :test do
   #gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.3'
   # Add this if you're using rbenv
-  gem 'capistrano-rbenv', '~> 2.0.3'
+  #gem 'capistrano-rbenv', '~> 2.0.3'
+  gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.3'
+
 end
 
 group :production do
