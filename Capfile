@@ -21,7 +21,7 @@ require 'capistrano/rbenv'
   require 'capistrano/bundler'
   require 'capistrano/rails'
   set :rbenv_type, :user # or :system, depends on your rbenv setup
-  set :rbenv_ruby, '2.2.2'
+  set :rbenv_ruby, '2.4.2'
 #
 # require 'capistrano/rvm'
 # require 'capistrano/rbenv'
