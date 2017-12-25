@@ -3,7 +3,7 @@ lock '3.4.1'
 
 
 set :application, 'projetolattes'
-set :repo_url, 'git@github.com:lattesproject/projetolattes.git'
+set :repo_url, 'git@github.com:lattesproject/lattes.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
